@@ -53,9 +53,7 @@ exports.createkolegiji = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
-
 //Ispis svih kolegija, potrebno preurediti da ispisuje popis svih kolegija za pojedini studiji
-
 exports.findAll = (req, res) => {
   Kolegij.findAll({
     where: {},

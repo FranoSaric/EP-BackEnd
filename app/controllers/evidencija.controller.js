@@ -49,7 +49,6 @@ exports.createevidencija= (req, res) => {
     });
   }
 };
-
 exports.findAll = (req, res) => {
     Evidencija.findAll({}).then(data=> {
         res.send(data);
