@@ -25,7 +25,13 @@ verifyToken = (req, res, next) => {
 };
 
 isDjelatnik = (req, res, next) => {
-  Korisnik.findByPk(req.brojIndexa).then(korisnik => {
+  Korisnik.findOne({
+    where: {
+      brojIndexa: {
+        [Op.eq]: req.brojIndexa
+      }
+    }
+  }).then(korisnik => {
     korisnik.getUloga().then(uloga => {
       
         if (uloga.naziv === "djelatnik") {
