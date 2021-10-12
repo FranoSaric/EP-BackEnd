@@ -16,7 +16,7 @@ module.exports = function(app) {
     "/findstudij",
     [authJwt.verifyToken, authJwt.isDjelatnik],
     controller.findAll);
-  app.post("/createstudij",
+  app.post("/createstudij/:id?",
   [authJwt.verifyToken, authJwt.isDjelatnik], 
   controller.createstudij);
 };

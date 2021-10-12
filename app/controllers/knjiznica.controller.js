@@ -12,6 +12,7 @@ exports.createknjiznica = (req, res) => {
     });
     return;
   }
+  
     Knjiznica.create()
     .then(knjiznica => {
         if (req.body.ustanovaId) {

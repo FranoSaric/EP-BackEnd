@@ -17,7 +17,7 @@ module.exports = function(app) {
     [authJwt.verifyToken, authJwt.isDjelatnik],
     controller.findAll);
   app.post(
-    "/createkategorija", 
+    "/createkategorija/:id?", 
     [authJwt.verifyToken, authJwt.isDjelatnik],
     controller.createkategorija);
 };

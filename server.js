@@ -29,14 +29,13 @@ const Uloga = db.uloga;
 // })  
 
 // simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome." });
-  initial();
-});
+// app.get("/", (req, res) => {
+//   res.json({ message: "Welcome." });
+//   initial();
+// });
 
 // routes
 require('./app/routes/auth.routes')(app);
-require('./app/routes/user.routes')(app);
 require('./app/routes/ucionica.routes')(app);
 require('./app/routes/studiji.routes')(app);
 require('./app/routes/evidencija.routes')(app);
@@ -51,7 +50,7 @@ require('./app/routes/knjiznica.routes')(app);
 
 
 // set port, listen for requests
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });

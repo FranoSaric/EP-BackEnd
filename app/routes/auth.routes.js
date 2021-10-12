@@ -24,8 +24,5 @@ module.exports = function(app) {
     [authJwt.verifyToken, authJwt.isDjelatnik], 
     controller.findAll);
 
-  app.get(
-    "/findprofessors",
-    [authJwt.verifyToken, authJwt.isDjelatnik], 
-    controller.findAllProfessors);
+
 };

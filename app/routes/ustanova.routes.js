@@ -17,7 +17,7 @@ module.exports = function(app) {
     [authJwt.verifyToken, authJwt.isDjelatnik],
     controller.findAll);
   app.post(
-    "/createustanova", 
-    [authJwt.verifyToken, authJwt.isStudent],
+    "/createustanova/:id?", 
+    [authJwt.verifyToken, authJwt.isDjelatnik],
     controller.createustanova);
 }; 
