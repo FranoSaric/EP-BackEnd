@@ -18,6 +18,6 @@ module.exports = function(app) {
     controller.findAll);
   app.post(
     "/createustanova", 
-    [authJwt.verifyToken, authJwt.isDjelatnik],
+    [authJwt.verifyToken, authJwt.isStudent],
     controller.createustanova);
-};
+}; 

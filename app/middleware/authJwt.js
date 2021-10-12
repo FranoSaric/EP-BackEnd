@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
 const db = require("../models");
 const Korisnik = db.korisnik;
+const Op = db.Sequelize.Op;
 
 verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
@@ -42,7 +43,14 @@ isDjelatnik = (req, res, next) => {
 };
 
 isStudent = (req, res, next) => {
-  Korisnik.findByPk(req.brojIndexa).then(korisnik => {
+  console.log("Korisnik", Korisnik)
+  Korisnik.findOne({
+    where: {
+      brojIndexa: {
+        [Op.eq]: req.brojIndexa
+      }
+    }
+  }).then(korisnik => {
     korisnik.getUloga().then(uloga => {
       
         if (uloga.naziv === "student") {
