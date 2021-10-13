@@ -19,7 +19,8 @@ module.exports = function(app) {
 
 
   app.post(
-    "/createRecord",
+    "/createRecord/:id?",
+    [authJwt.verifyToken, authJwt.isDjelatnik], 
     controller.createRecord);
   
 };

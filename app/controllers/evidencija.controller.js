@@ -14,7 +14,7 @@ exports.createRecord = (req, res) => {
         return;
     }
     if (req.params.id) {
-      Evidencija.findOne({
+        Evidencija.findOne({
             where: {
                 id: {
                     [Op.eq]: req.params.id,
@@ -22,12 +22,11 @@ exports.createRecord = (req, res) => {
             },
         })
             .then((evidencija) => {
-              evidencija.update({
-                });
+                evidencija.update({datumKreiranja: req.body.datumKreiranja});
                 if (req.body.osobaFK) {
                     Korisnik.findOne({
                         where: {
-                            brojIndexa: {
+                            id: {
                                 [Op.eq]: req.body.osobaFK,
                             },
                         },
@@ -46,27 +45,31 @@ exports.createRecord = (req, res) => {
                                         .then(() => {
                                             res.status(200).send({
                                                 message:
-                                                    "Evidencija uspješno unesena.",
+                                                    "Evidencija uspješno uređena.",
                                             });
                                         });
+                                });
+                            } else {
+                                res.status(500).send({
+                                    message: "Učionica nije poslana",
                                 });
                             }
                         });
                     });
                 } else {
-                    res.status(500).send({ message: "Kolegij nije poslan" });
+                    res.status(500).send({ message: "Osoba nije poslana" });
                 }
             })
             .catch((err) => {
                 res.status(500).send({ message: err.message });
             });
     } else {
-        Evidencija.create({})
+        Evidencija.create({ datumKreiranja: req.body.datumKreiranja })
             .then((evidencija) => {
                 if (req.body.osobaFK) {
                     Korisnik.findOne({
                         where: {
-                            brojIndexa: {
+                            id: {
                                 [Op.eq]: req.body.osobaFK,
                             },
                         },
@@ -79,16 +82,22 @@ exports.createRecord = (req, res) => {
                                             [Op.eq]: req.body.ucionicaFK,
                                         },
                                     },
-                                }).then((ucionicaFK) => {
-                                    evidencija
-                                        .setUcionica(ucionicaFK)
-                                        .then(() => {
-                                            res.status(200).send({
-                                                message:
-                                                    "Evidencija uspješno unesena.",
+                                })
+                                    .then((ucionicaFK) => {
+                                        evidencija
+                                            .setUcionica(ucionicaFK)
+                                            .then(() => {
+                                                res.status(200).send({
+                                                    message:
+                                                        "Evidencija uspješno unesena.",
+                                                });
                                             });
+                                    })
+                                    .catch((err) => {
+                                        res.status(500).send({
+                                            message: err.message,
                                         });
-                                });
+                                    });
                             }
                         });
                     });
