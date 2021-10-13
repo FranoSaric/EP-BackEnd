@@ -13,11 +13,11 @@ module.exports = function(app) {
 
  
   app.get(
-    "/findkategorija", 
+    "/getCategories", 
     [authJwt.verifyToken, authJwt.isDjelatnik],
-    controller.findAll);
+    controller.getCategories);
   app.post(
-    "/createkategorija/:id?", 
+    "/createCategory/:id?", 
     [authJwt.verifyToken, authJwt.isDjelatnik],
-    controller.createkategorija);
+    controller.createCategory);
 };

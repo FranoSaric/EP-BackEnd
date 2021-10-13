@@ -13,11 +13,11 @@ module.exports = function(app) {
 
  
   app.get(
-    "/finducionica", 
+    "/getClassrooms", 
     [authJwt.verifyToken, authJwt.isDjelatnik],
-    controller.findAll);
+    controller.getClassrooms);
   app.post(
-    "/createucionica/:id?", 
+    "/createClassroom/:id?", 
     [authJwt.verifyToken, authJwt.isDjelatnik],
-    controller.createucionica);
+    controller.createClassroom);
 };

@@ -5,7 +5,7 @@ const Ustanova = db.ustanova;
 
 const Op = db.Sequelize.Op;
 
-exports.createknjiznica = (req, res) => {
+exports.createLibrary = (req, res) => {
   if (!req.body.ustanovaId) {
     res.status(400).send({
       message: "Polje ustanove je obavezno!"
@@ -36,7 +36,7 @@ exports.createknjiznica = (req, res) => {
     });
   };
 
-  exports.findAll = (req, res) => {
+  exports.getLibraries = (req, res) => {
     Knjiznica.findAll({}).then(data=> {
         res.send(data);
     }).catch(err => {

@@ -13,11 +13,11 @@ module.exports = function(app) {
 
  
   app.get(
-    "/findknjiga", 
+    "/getBooks", 
     [authJwt.verifyToken, authJwt.isDjelatnik],
-    controller.findAll);
+    controller.getBooks);
   app.post(
-    "/createknjiga", 
+    "/createBook/:id?", 
     [authJwt.verifyToken, authJwt.isDjelatnik],
-    controller.createknjiga);
+    controller.createBook);
 };

@@ -5,7 +5,7 @@ const Ustanova = db.ustanova;
 
 const Op = db.Sequelize.Op;
 
-exports.createstudij = (req, res) => {
+exports.createStudy = (req, res) => {
   if (
     !req.body.naziv &&
     !req.body.godina &&
@@ -85,7 +85,7 @@ exports.createstudij = (req, res) => {
 
 //Ispis svih kolegija, potrebno preurediti da ispisuje popis svih kolegija za pojedini studiji
 
-exports.findAll = (req, res) => {
+exports.getStudies = (req, res) => {
   Studiji.findAll({
     where: {},
     include: [

@@ -11,7 +11,7 @@ const { Sequelize } = require('sequelize');
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
- exports.signup = (req, res) => {
+ exports.signUp = (req, res) => {
   if (!req.body.username && !req.body.brojIndexa && !req.body.ime && !req.body.prezime && !req.body.email && !req.body.lozinka && !req.body.datumKreiranja && !req.body.ulogaFK && !req.body.ustanovaFK) {
     res.status(400).send({
       message: "Sadržaj ne smije biti prazan!"
@@ -108,7 +108,7 @@ var bcrypt = require("bcryptjs");
   
 }; 
 //TODO("Napraviti signin preko sso za sum API")
-exports.signin = (req, res) => {
+exports.signIn = (req, res) => {
   Korisnik.findOne({
     where: {
       email: req.body.email
@@ -148,7 +148,7 @@ exports.signin = (req, res) => {
     });
 };
 //TODO("ispis svih korisnika za evidenciju")
-exports.findAll = (req, res) => {
+exports.findUser = (req, res) => {
   Korisnik.findAll({
     include: [{
       model: Evidencija,
@@ -179,12 +179,9 @@ exports.findAll = (req, res) => {
       });
     });
 };
-//TODO("Ispis svih profesora")
-exports.findAllProfessors = (req, res) => {
+
+exports.getUsers = (req, res) => {
   Korisnik.findAll({
-  where: {
-    ulogaFK : 3
-  }
   }).then(data=> {
       res.send(data);
   }).catch(err => {

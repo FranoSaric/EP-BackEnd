@@ -8,7 +8,7 @@ const Op = db.Sequelize.Op;
 
 //Kreira kolegij, potrebno preurediti da kreira kolegij za pojedini studij/ustanovu
 
-exports.createkolegiji = (req, res) => {
+exports.createCollege = (req, res) => {
   if (
     !req.body.naziv &&
     !req.body.akGod &&
@@ -111,7 +111,7 @@ exports.createkolegiji = (req, res) => {
   }
 };
 //Ispis svih kolegija, potrebno preurediti da ispisuje popis svih kolegija za pojedini studiji
-exports.findAll = (req, res) => {
+exports.getColleges = (req, res) => {
   Kolegij.findAll({
     where: {},
     include: [

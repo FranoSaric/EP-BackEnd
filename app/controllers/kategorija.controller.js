@@ -4,7 +4,7 @@ const Kategorija = db.kategorija;
 
 const Op = db.Sequelize.Op;
 
-exports.createkategorija = (req, res) => {
+exports.createCategory = (req, res) => {
   if (!req.body.naziv) {
     res.status(400).send({
       message: "Naziv kategorije je potreban!",
@@ -51,7 +51,7 @@ exports.createkategorija = (req, res) => {
   }
 };
 
-exports.findAll = (req, res) => {
+exports.getCategories = (req, res) => {
   Kategorija.findAll({})
     .then((data) => {
       res.send(data);

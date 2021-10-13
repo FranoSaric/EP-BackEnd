@@ -13,11 +13,11 @@ module.exports = function(app) {
 
  
   app.get(
-    "/findtermini/:id", 
+    "/getTerms/:id", 
     [/* authJwt.verifyToken, authJwt.isDjelatnik */],
-    controller.findAll);
+    controller.getTerms);
   app.post(
-    "/createtermini/:id?",
+    "/createTerm/:id?",
     [authJwt.verifyToken, authJwt.isDjelatnik], 
-    controller.createtermini);
+    controller.createTerm);
 };

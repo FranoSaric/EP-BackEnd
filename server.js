@@ -63,7 +63,7 @@ function initial() {
  
   Uloga.create({
     id: 2,
-    naziv: "profesor"
+    naziv: "djelatnik"
   });
  
   Uloga.create({

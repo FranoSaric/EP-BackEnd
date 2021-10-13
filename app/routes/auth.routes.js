@@ -12,17 +12,22 @@ module.exports = function(app) {
   });
 
    app.post(
-    "/signup",
+    "/signUp",
     /* [verifySignUp.checkDuplicateUsernameOrEmail], */
-    controller.signup
+    controller.signUp
   ); 
 
-  app.post("/signin", controller.signin);
+  app.post("/signIn", controller.signIn);
 
   app.get(
-    "/findkorisnik/:id/:startTime/:endTime",
+    "/findUser/:id/:startTime/:endTime",
     [authJwt.verifyToken, authJwt.isDjelatnik], 
-    controller.findAll);
+    controller.findUser);
+
+    app.get(
+      "/getUsers",
+      [authJwt.verifyToken, authJwt.isDjelatnik], 
+      controller.getUsers);
 
 
 };

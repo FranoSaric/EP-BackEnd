@@ -13,11 +13,11 @@ module.exports = function(app) {
 
  
   app.get(
-    "/findkolegiji/:id",
+    "/getColleges/:id",
     [authJwt.verifyToken, authJwt.isDjelatnik],
-    controller.findAll);
+    controller.getColleges);
   app.post(
-    "/createkolegiji/:id?",
+    "/createCollege/:id?",
     [authJwt.verifyToken, authJwt.isDjelatnik], 
-    controller.createkolegiji);
+    controller.createCollege);
 };

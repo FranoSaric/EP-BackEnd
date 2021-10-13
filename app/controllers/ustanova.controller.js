@@ -4,7 +4,7 @@ const Ustanova = db.ustanova;
 
 const Op = db.Sequelize.Op;
 
-exports.createustanova = (req, res) => {
+exports.createInstitution = (req, res) => {
   if (
     !req.body.naziv &&
     !req.body.adresa &&
@@ -62,7 +62,7 @@ exports.createustanova = (req, res) => {
   }
 };
 
-exports.findAll = (req, res) => {
+exports.getInstitutions = (req, res) => {
   Ustanova.findAll({})
     .then((data) => {
       res.send(data);

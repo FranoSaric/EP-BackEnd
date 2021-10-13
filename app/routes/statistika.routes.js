@@ -13,10 +13,10 @@ module.exports = function(app) {
 
  
   app.get(
-    "/findstatistika",
+    "/getStatistics",
     [authJwt.verifyToken, authJwt.isDjelatnik],
-    controller.findAll);
-  app.post("/createstatistika",
+    controller.getStatistics);
+  app.post("/createStatistics/:id?",
   [authJwt.verifyToken, authJwt.isDjelatnik], 
-  controller.createstatistika);
+  controller.createStatistics);
 };

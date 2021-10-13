@@ -5,7 +5,7 @@ const Ustanova = db.ustanova;
 
 const Op = db.Sequelize.Op;
 
-exports.createucionica = (req, res) => {
+exports.getClassrooms = (req, res) => {
   if (
     !req.body.brojucionice &&
     !req.body.brojmjesta &&
@@ -81,7 +81,7 @@ exports.createucionica = (req, res) => {
   }
 };
 
-exports.findAll = (req, res) => {
+exports.createClassroom = (req, res) => {
   Ucionica.findAll({})
     .then((data) => {
       res.send(data);

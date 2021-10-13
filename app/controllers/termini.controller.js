@@ -6,7 +6,7 @@ const Kolegiji = db.kolegiji;
 
 const Op = db.Sequelize.Op;
 
-exports.createtermini = (req, res) => {
+exports.createTerm = (req, res) => {
   if (
     !req.body.datum &&
     !req.body.startTime &&
@@ -113,7 +113,7 @@ exports.createtermini = (req, res) => {
   }
 };
 
-exports.findAll = (req, res) => {
+exports.getTerms = (req, res) => {
   Termini.findAll({
     include: [
       {

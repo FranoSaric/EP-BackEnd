@@ -13,10 +13,10 @@ module.exports = function(app) {
 
  
   app.get(
-    "/findstudij",
+    "/getStudies",
     [authJwt.verifyToken, authJwt.isDjelatnik],
-    controller.findAll);
-  app.post("/createstudij/:id?",
+    controller.getStudies);
+  app.post("/createStudy/:id?",
   [authJwt.verifyToken, authJwt.isDjelatnik], 
-  controller.createstudij);
+  controller.createStudy);
 };

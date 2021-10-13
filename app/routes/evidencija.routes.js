@@ -13,13 +13,13 @@ module.exports = function(app) {
 
  
   app.get(
-    "/findevidencija",
+    "/getRecords",
     [authJwt.verifyToken, authJwt.isDjelatnik], 
-    controller.findAll);
+    controller.getRecords);
 
 
   app.post(
-    "/createevidencija",
-    controller.createevidencija);
+    "/createRecord",
+    controller.createRecord);
   
 };

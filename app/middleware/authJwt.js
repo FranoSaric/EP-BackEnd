@@ -32,6 +32,7 @@ isDjelatnik = (req, res, next) => {
       }
     }
   }).then(korisnik => {
+    console.log(korisnik)
     korisnik.getUloga().then(uloga => {
       
         if (uloga.naziv === "djelatnik") {

@@ -13,11 +13,11 @@ module.exports = function(app) {
 
  
   app.get(
-    "/findustanova", 
+    "/getInstitutions", 
     [authJwt.verifyToken, authJwt.isDjelatnik],
-    controller.findAll);
+    controller.getInstitutions);
   app.post(
-    "/createustanova/:id?", 
+    "/createInstitution/:id?", 
     [authJwt.verifyToken, authJwt.isDjelatnik],
-    controller.createustanova);
+    controller.createInstitution);
 }; 
