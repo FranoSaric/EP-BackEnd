@@ -1,81 +1,77 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
 const db = require("../models");
-const Korisnik = db.korisnik;
+const Users = db.users;
 const Op = db.Sequelize.Op;
 
 verifyToken = (req, res, next) => {
-  let token = req.headers["x-access-token"];
+    let token = req.headers["x-access-token"];
 
-  if (!token) {
-    return res.status(403).send({
-      message: "No token provided!"
-    });
-  }
-
-  jwt.verify(token, config.secret, (err, decoded) => {
-    if (err) {
-      return res.status(401).send({
-        message: "Unauthorized!"
-      });
+    if (!token) {
+        return res.status(403).send({
+            message: "No token provided!",
+        });
     }
-    req.brojIndexa = decoded.id;
-    next();
-  });
+
+    jwt.verify(token, config.secret, (err, decoded) => {
+        if (err) {
+            return res.status(401).send({
+                message: "Unauthorized!",
+            });
+        }
+        req.indexNumber = decoded.id;
+        next();
+    });
 };
 
-isDjelatnik = (req, res, next) => {
-  Korisnik.findOne({
-    where: {
-      brojIndexa: {
-        [Op.eq]: req.brojIndexa
-      }
-    }
-  }).then(korisnik => {
-    console.log(korisnik)
-    korisnik.getUloga().then(uloga => {
-      
-        if (uloga.naziv === "djelatnik") {
-          next();
-          return;
-        }
-      
+isEmployee = (req, res, next) => {
+    Users.findOne({
+        where: {
+            id: {
+                [Op.eq]: req.indexNumber,
+            },
+        },
+    }).then((users) => {
+      console.log(users)
+        users.getRole().then((roles) => {
+          console.log(roles)
+            if (roles.name === "djelatnik") {
+                next();
+                return;
+            }
 
-      res.status(403).send({
-        message: "Potrebna djelatnik uloga!"
-      });
-      return;
+            res.status(403).send({
+                message: "Required employee role!",
+            });
+            return;
+        });
     });
-  });
 };
 
 isStudent = (req, res, next) => {
-  console.log("Korisnik", Korisnik)
-  Korisnik.findOne({
-    where: {
-      brojIndexa: {
-        [Op.eq]: req.brojIndexa
-      }
-    }
-  }).then(korisnik => {
-    korisnik.getUloga().then(uloga => {
-      
-        if (uloga.naziv === "student") {
-          next();
-          return;
-        }
-      
+    Users.findOne({
+        where: {
+            indexNumber: {
+                [Op.eq]: req.indexNumber,
+            },
+        },
+    }).then((users) => {
+        users.getRoles().then((roles) => {
+            if (roles.name === "student") {
+                next();
+                return;
+            }
 
-      res.status(403).send({
-        message: "Potrebna student uloga!"
-      });
+            res.status(403).send({
+                message: "Required student role!",
+            });
+        });
     });
-  });
 };
 
 const authJwt = {
-  verifyToken: verifyToken,
-  isDjelatnik: isDjelatnik,
-  isStudent: isStudent
+    verifyToken: verifyToken,
+    isEmployee: isEmployee,
+    isStudent: isStudent,
 };
 module.exports = authJwt;

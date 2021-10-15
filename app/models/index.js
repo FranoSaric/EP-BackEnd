@@ -35,74 +35,74 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.kolegiji = require("../models/kolegiji.model.js")(sequelize, Sequelize);
-db.korisnik = require("../models//korisnik.model.js")(sequelize, Sequelize);
-db.uloga = require("../models/uloga.model.js")(sequelize, Sequelize);
-db.studiji = require("../models/studiji.model.js")(sequelize, Sequelize);
-db.termini = require("../models/termini.model.js")(sequelize, Sequelize);
-db.ucionica = require("../models/ucionica.model.js")(sequelize, Sequelize);
-db.evidencija = require("../models/evidencija.model.js")(sequelize, Sequelize);
-db.kategorija= require("../models/kategorija.model.js")(sequelize, Sequelize);
-db.knjiga= require("../models/knjiga.model.js")(sequelize, Sequelize);
-db.knjiznica= require("../models/knjiznica.model.js")(sequelize, Sequelize);
-db.knjigaknjiznica= require("../models/knjigaknjiznica.model.js")(sequelize, Sequelize);
-db.statistika= require("../models/statistika.model.js")(sequelize, Sequelize);
-db.ustanova= require("../models/ustanova.model.js")(sequelize, Sequelize);
-db.studentKnjiga= require("../models/studentknjiga.model.js")(sequelize, Sequelize);
+db.courses = require("../models/courses.model.js")(sequelize, Sequelize);
+db.users = require("../models//users.model.js")(sequelize, Sequelize);
+db.roles = require("../models/roles.model.js")(sequelize, Sequelize);
+db.studies = require("../models/studies.model.js")(sequelize, Sequelize);
+db.terms = require("../models/terms.model.js")(sequelize, Sequelize);
+db.classrooms = require("../models/classrooms.model.js")(sequelize, Sequelize);
+db.records = require("../models/records.model.js")(sequelize, Sequelize);
+db.categories= require("../models/categories.model.js")(sequelize, Sequelize);
+db.books= require("../models/books.model.js")(sequelize, Sequelize);
+db.library= require("../models/library.model.js")(sequelize, Sequelize);
+db.booksLibrary= require("../models/booksLibrary.model.js")(sequelize, Sequelize);
+db.statistics= require("../models/statistics.model.js")(sequelize, Sequelize);
+db.institutions= require("../models/institutions.model.js")(sequelize, Sequelize);
+db.studentBook= require("../models/studentBook.model.js")(sequelize, Sequelize);
 
 /*Veza 1-1*/
-db.korisnik.hasMany(db.statistika)
-db.statistika.belongsTo(db.korisnik)
+db.users.hasMany(db.statistics)
+db.statistics.belongsTo(db.users)
 
-db.ustanova.hasMany(db.knjiznica)
-db.knjiznica.belongsTo(db.ustanova)
+db.institutions.hasMany(db.library)
+db.library.belongsTo(db.institutions)
 
-db.uloga.hasMany(db.korisnik, {foreignKey: 'ulogaFK', sourceKey: 'id'});
-db.korisnik.belongsTo(db.uloga, {foreignKey: 'ulogaFK', targetKey: 'id'});
+db.roles.hasMany(db.users, {foreignKey: 'roleFK', sourceKey: 'id'});
+db.users.belongsTo(db.roles, {foreignKey: 'roleFK', targetKey: 'id'});
 
-db.ustanova.hasMany(db.korisnik, {foreignKey: 'ustanovaFK', sourceKey: 'id'});
-db.korisnik.belongsTo(db.ustanova, {foreignKey: 'ustanovaFK', targetKey: 'id'});
+db.institutions.hasMany(db.users, {foreignKey: 'institutionFK', sourceKey: 'id'});
+db.users.belongsTo(db.institutions, {foreignKey: 'institutionFK', targetKey: 'id'});
 
-db.studiji.hasMany(db.kolegiji, {foreignKey: 'studijiFK', sourceKey: 'id'});
-db.kolegiji.belongsTo(db.studiji, {foreignKey: 'studijiFK', targetKey: 'id'});
+db.studies.hasMany(db.courses, {foreignKey: 'studyFK', sourceKey: 'id'});
+db.courses.belongsTo(db.studies, {foreignKey: 'studyFK', targetKey: 'id'});
 
-db.korisnik.hasMany(db.kolegiji, {foreignKey: 'osobljeFK', sourceKey: 'id'});
-db.kolegiji.belongsTo(db.korisnik, {foreignKey: 'osobljeFK', targetKey: 'id'});
+db.users.hasMany(db.courses, {foreignKey: 'userFK', sourceKey: 'id'});
+db.courses.belongsTo(db.users, {foreignKey: 'userFK', targetKey: 'id'});
 
-db.kolegiji.hasMany(db.termini, {foreignKey: 'kolegijiFK', sourceKey: 'id'});
-db.termini.belongsTo(db.kolegiji, {foreignKey: 'kolegijiFK', targetKey: 'id'});
+db.courses.hasMany(db.terms, {foreignKey: 'courseFK', sourceKey: 'id'});
+db.terms.belongsTo(db.courses, {foreignKey: 'courseFK', targetKey: 'id'});
 
-db.ucionica.hasMany(db.termini, {foreignKey: 'ucionicaFK', sourceKey: 'id'});
-db.termini.belongsTo(db.ucionica, {foreignKey: 'ucionicaFK', targetKey: 'id'});
+db.classrooms.hasMany(db.terms, {foreignKey: 'classroomFK', sourceKey: 'id'});
+db.terms.belongsTo(db.classrooms, {foreignKey: 'classroomFK', targetKey: 'id'});
 
-db.ucionica.hasMany(db.evidencija, {foreignKey: 'ucionicaFK', sourceKey: 'id'});
-db.evidencija.belongsTo(db.ucionica, {foreignKey: 'ucionicaFK', targetKey: 'id'});
+db.classrooms.hasMany(db.records, {foreignKey: 'classroomFK', sourceKey: 'id'});
+db.records.belongsTo(db.classrooms, {foreignKey: 'classroomFK', targetKey: 'id'});
 
-db.korisnik.hasMany(db.evidencija, {foreignKey: 'osobaFK', sourceKey: 'id'});
-db.evidencija.belongsTo(db.korisnik, {foreignKey: 'osobaFK', targetKey: 'id'});
+db.users.hasMany(db.records, {foreignKey: 'userFK', sourceKey: 'id'});
+db.records.belongsTo(db.users, {foreignKey: 'userFK', targetKey: 'id'});
 
-db.ustanova.hasMany(db.ucionica, {foreignKey: 'ustanovaFK', sourceKey: 'id'});
-db.ucionica.belongsTo(db.ustanova, {foreignKey: 'ustanovaFK', targetKey: 'id'});
+db.institutions.hasMany(db.classrooms, {foreignKey: 'institutionFK', sourceKey: 'id'});
+db.classrooms.belongsTo(db.institutions, {foreignKey: 'institutionFK', targetKey: 'id'});
 
-db.ustanova.hasMany(db.studiji, {foreignKey: 'ustanovaFK', sourceKey: 'id'});
-db.studiji.belongsTo(db.ustanova, {foreignKey: 'ustanovaFK', targetKey: 'id'});
+db.institutions.hasMany(db.studies, {foreignKey: 'institutionFK', sourceKey: 'id'});
+db.studies.belongsTo(db.institutions, {foreignKey: 'institutionFK', targetKey: 'id'});
 
-db.knjiznica.hasMany(db.knjigaknjiznica, {foreignKey: 'knjiznicaFK', sourceKey: 'id'});
-db.knjigaknjiznica.belongsTo(db.knjiznica, {foreignKey: 'knjiznicaFK', targetKey: 'id'});
+db.library.hasMany(db.booksLibrary, {foreignKey: 'libraryFK', sourceKey: 'id'});
+db.booksLibrary.belongsTo(db.library, {foreignKey: 'libraryFK', targetKey: 'id'});
 
-db.knjiga.hasMany(db.knjigaknjiznica, {foreignKey: 'knjigaFK', sourceKey: 'id'});
-db.knjigaknjiznica.belongsTo(db.knjiga, {foreignKey: 'knjigaFK', targetKey: 'id'});
+db.books.hasMany(db.booksLibrary, {foreignKey: 'bookFK', sourceKey: 'id'});
+db.booksLibrary.belongsTo(db.books, {foreignKey: 'bookFK', targetKey: 'id'});
 
-db.kategorija.hasMany(db.knjiga, {foreignKey: 'kategorijaFK', sourceKey: 'id'});
-db.knjiga.belongsTo(db.kategorija, {foreignKey: 'kategorijaFK', targetKey: 'id'});
+db.categories.hasMany(db.books, {foreignKey: 'categoryFK', sourceKey: 'id'});
+db.books.belongsTo(db.categories, {foreignKey: 'categoryFK', targetKey: 'id'});
 
-db.korisnik.hasMany(db.studentKnjiga, {foreignKey: 'osobaFK', sourceKey: 'id'});
-db.studentKnjiga.belongsTo(db.korisnik, {foreignKey: 'osobaFK', targetKey: 'id'});
+db.users.hasMany(db.studentBook, {foreignKey: 'userFK', sourceKey: 'id'});
+db.studentBook.belongsTo(db.users, {foreignKey: 'userFK', targetKey: 'id'});
 
-db.knjiga.hasMany(db.studentKnjiga, {foreignKey: 'knjigaFK', sourceKey: 'id'});
-db.studentKnjiga.belongsTo(db.knjiga, {foreignKey: 'knjigaFK', targetKey: 'id'});
+db.books.hasMany(db.studentBook, {foreignKey: 'bookFK', sourceKey: 'id'});
+db.studentBook.belongsTo(db.books, {foreignKey: 'bookFK', targetKey: 'id'});
 
 
-db.ULOGA = ["student", "djelatnik"];
+db.roles = ["student", "djelatnik"];
 
 module.exports = db;
