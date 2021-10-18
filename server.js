@@ -46,6 +46,7 @@ require("./app/routes/institutions.routes")(app);
 require("./app/routes/statistics.routes")(app);
 require("./app/routes/studentBook.routes")(app);
 require("./app/routes/library.routes")(app);
+require("./app/routes/booksLibrary.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8081;

@@ -146,13 +146,13 @@ exports.signIn = (req, res) => {
             if (!users) {
                 return res.status(404).send({ message: "User not found." });
             }
-            var passwordIsValid = bcrypt.compareSync(
-                req.body.password,
-                users.password
-            );
+            // var passwordIsValid = bcrypt.compareSync(
+            //     req.body.password,
+            //     users.password
+            // );
 
-            // var passwordIsValid=true;
-            // req.body.lozinka === korisnik.lozinka
+            var passwordIsValid=true;
+            // req.body.password === korisnik.password
             //     ? (passwordIsValid = true)
             //     : (passwordIsValid = false);
 
