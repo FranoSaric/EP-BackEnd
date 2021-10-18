@@ -27,14 +27,12 @@ verifyToken = (req, res, next) => {
 isEmployee = (req, res, next) => {
     Users.findOne({
         where: {
-            id: {
+            indexNumber: {
                 [Op.eq]: req.indexNumber,
             },
         },
     }).then((users) => {
-      console.log(users)
         users.getRole().then((roles) => {
-          console.log(roles)
             if (roles.name === "djelatnik") {
                 next();
                 return;

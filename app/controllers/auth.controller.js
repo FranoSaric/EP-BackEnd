@@ -110,7 +110,7 @@ exports.signUp = (req, res) => {
                                 },
                             },
                         }).then((id) => {
-                            users.setRoles(id);
+                            users.setRole(id);
                         });
                     } else {
                         // user role = 1
@@ -165,7 +165,7 @@ exports.signIn = (req, res) => {
             var token = jwt.sign({ id: users.indexNumber }, config.secret, {
                 expiresIn: 86400, // expires in 24 hours
             });
-            users.getRoles().then((roles) => {
+            users.getRole().then((roles) => {
                 res.status(200).send({
                     indexNumber: users.indexNumber,
                     userName: users.userName,

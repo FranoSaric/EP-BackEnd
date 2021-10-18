@@ -103,6 +103,4 @@ db.books.hasMany(db.studentBook, {foreignKey: 'bookFK', sourceKey: 'id'});
 db.studentBook.belongsTo(db.books, {foreignKey: 'bookFK', targetKey: 'id'});
 
 
-db.roles = ["student", "djelatnik"];
-
 module.exports = db;

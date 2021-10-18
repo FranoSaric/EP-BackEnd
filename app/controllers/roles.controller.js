@@ -35,6 +35,7 @@ exports.createRole = (req, res) => {
                 });
         });
     } else {
+        console.log(Roles);
         Roles.create({
             name: req.body.name,
         })
@@ -52,6 +53,7 @@ exports.createRole = (req, res) => {
 };
 
 exports.getRoles = (req, res) => {
+    console.log(Roles);
     Roles.findAll({})
         .then((data) => {
             res.send(data);
