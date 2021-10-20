@@ -1,6 +1,6 @@
 const db = require("../models");
-const ROLES = db.role;
-const User = db.korisnik;
+const Roles = db.role;
+const Users = db.users;
 
 /* checkDuplicateUsernameOrEmail = (req, res, next) => {
   // Username
@@ -35,18 +35,19 @@ const User = db.korisnik;
 }; */
 
 checkRolesExisted = (req, res, next) => {
-  if (req.body.roles) {
-    for (let i = 0; i < req.body.roles.length; i++) {
-      if (!ROLES.includes(req.body.roles[i])) {
-        res.status(400).send({
-          message: "Failed! Role does not exist = " + req.body.roles[i]
-        });
-        return;
-      }
+    if (req.body.roles) {
+        for (let i = 0; i < req.body.roles.length; i++) {
+            if (!Roles.includes(req.body.roles[i])) {
+                res.status(400).send({
+                    message:
+                        "Failed! Role does not exist = " + req.body.roles[i],
+                });
+                return;
+            }
+        }
     }
-  }
-  
-  next();
+
+    next();
 };
 
 /* const verifySignUp = {

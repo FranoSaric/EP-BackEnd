@@ -1,6 +1,6 @@
 const { verifySignUp } = require("../middleware");
 const { authJwt } = require("../middleware");
-const controller = require("../controllers/auth.controller");
+const controller = require("../controllers/studentBook.controller");
 
 module.exports = function (app) {
     app.use(function (req, res, next) {
@@ -11,23 +11,14 @@ module.exports = function (app) {
         next();
     });
 
+    app.get(
+        "/getStudentBooks",
+        [authJwt.verifyToken, authJwt.isEmployee],
+        controller.getStudentBooks
+    );
     app.post(
-        "/signUp",
-        /* [verifySignUp.checkDuplicateUsernameOrEmail], */
-        controller.signUp
-    );
-
-    app.post("/signIn", controller.signIn);
-
-    app.get(
-        "/findUser/:id/:startTime/:endTime",
+        "/createStudentBook/:id?",
         [authJwt.verifyToken, authJwt.isEmployee],
-        controller.findUser
-    );
-
-    app.get(
-        "/getUsers",
-        [authJwt.verifyToken, authJwt.isEmployee],
-        controller.getUsers
+        controller.createStudentBook
     );
 };
