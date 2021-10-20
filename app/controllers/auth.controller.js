@@ -6,6 +6,8 @@ const Classrooms = db.classrooms;
 const Terms = db.terms;
 const Roles = db.roles;
 const Institutions = db.institutions;
+const UserClaim = db.userClaim;
+const RoleClaim = db.roleClaim;
 const Op = db.Sequelize.Op;
 const { Sequelize } = require("sequelize");
 var jwt = require("jsonwebtoken");
@@ -13,18 +15,18 @@ var bcrypt = require("bcryptjs");
 
 exports.signUp = (req, res) => {
     if (
-        !req.body.userName ||
-        !req.body.indexNumber ||
-        !req.body.firtName ||
-        !req.body.lastName ||
-        !req.body.email ||
-        !req.body.password ||
-        !req.body.creationDate ||
-        !req.body.roleFK ||
+        !req.body.userName &&
+        !req.body.indexNumber &&
+        !req.body.firtName &&
+        !req.body.lastName &&
+        !req.body.email &&
+        !req.body.password &&
+        !req.body.creationDate &&
+        !req.body.roleFK &&
         !req.body.institutionFK
     ) {
         res.status(400).send({
-            message: "Sadržaj ne smije biti prazan!",
+            message: "All fields are required!",
         });
         return;
     }
@@ -99,7 +101,7 @@ exports.signUp = (req, res) => {
                                 },
                             },
                         }).then((id) => {
-                            users.setInstitutions(id);
+                            users.setInstitution(id);
                         });
                     }
                     if (req.body.roleFK) {
@@ -151,7 +153,7 @@ exports.signIn = (req, res) => {
             //     users.password
             // );
 
-            var passwordIsValid=true;
+            var passwordIsValid = true;
             // req.body.password === korisnik.password
             //     ? (passwordIsValid = true)
             //     : (passwordIsValid = false);
@@ -159,12 +161,92 @@ exports.signIn = (req, res) => {
             if (!passwordIsValid) {
                 return res.status(401).send({
                     accessToken: null,
-                    message: "Pogrešna lozinka!",
+                    message: "Wrong password!",
                 });
             }
             var token = jwt.sign({ id: users.indexNumber }, config.secret, {
                 expiresIn: 86400, // expires in 24 hours
             });
+
+            let claims = {};
+
+            UserClaim.findAll({
+                include: [
+                    {
+                        model: Users,
+                        //  required: false
+                    },
+                ],
+            }).then((userClaim) => {
+                for (let k = 0; k < userClaim.length; k++) {
+                    let type = userClaim[k].dataValues.claimType;
+                    let claimsArray = [];
+                    for (let l = 0; l < type.length; l++) {
+                        if (userClaim[l] !== undefined) {
+                            if (type === userClaim[l].dataValues.claimType) {
+                                let claim = userClaim[l].dataValues.claimValue;
+                                claimsArray.push(claim);
+                            }
+                        }
+                    }
+                    claims[type] = claimsArray;
+                    // console.log("claimType",userClaim[i].dataValues.claimType)
+                    // console.log("claimValue",userClaim[i].dataValues.claimValue)
+                }
+            });
+
+            RoleClaim.findAll({
+                include: [
+                    {
+                        model: Roles,
+                        //  required: false
+                    },
+                ],
+            }).then((roleClaim) => {
+                console.log("roleClaim.length",roleClaim.length)
+                for (let i = 0; i < roleClaim.length; i++) {
+                    console.log("roletype", roleClaim[i].dataValues.claimType)
+                    let type = roleClaim[i].dataValues.claimType;
+                    
+                    if (roleClaim[i].dataValues.claimType in claims) {
+                        for (let j = 0; j < type.length; j++) {
+                            if (roleClaim[j] !== undefined) {
+                                if (
+                                    type === roleClaim[j].dataValues.claimType
+                                ) {
+                                    let claim =
+                                        roleClaim[j].dataValues.claimValue;
+                                        claims[type].push(claim);
+                                }
+                            }
+                        }
+                        // console.log(
+                        //     "claimType",
+                        //     roleClaim[i].dataValues.claimType
+                        // );
+                        // console.log(
+                        //     "claimValue",
+                        //     roleClaim[i].dataValues.claimValue
+                        // );
+                    }else{
+                        let claimsArray = [];
+                        for (let j = 0; j < type.length; j++) {
+                            if (roleClaim[j] !== undefined) {
+                                if (
+                                    type === roleClaim[j].dataValues.claimType
+                                ) {
+                                    let claim =
+                                        roleClaim[j].dataValues.claimValue;
+                                        claimsArray.push(claim);
+                                }
+                            }
+                        }
+                        claims[type] = claimsArray;
+                    }
+                }
+                console.log("claimovi", claims);
+            });
+
             users.getRole().then((roles) => {
                 res.status(200).send({
                     indexNumber: users.indexNumber,
@@ -174,6 +256,7 @@ exports.signIn = (req, res) => {
                     email: users.email,
                     roles: roles.name,
                     accessToken: token,
+                    claims: claims
                 });
             });
         })

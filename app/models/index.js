@@ -49,6 +49,8 @@ db.booksLibrary= require("../models/booksLibrary.model.js")(sequelize, Sequelize
 db.statistics= require("../models/statistics.model.js")(sequelize, Sequelize);
 db.institutions= require("../models/institutions.model.js")(sequelize, Sequelize);
 db.studentBook= require("../models/studentBook.model.js")(sequelize, Sequelize);
+db.roleClaim= require("../models/roleClaim.model.js")(sequelize, Sequelize);
+db.userClaim= require("../models/userClaim.model.js")(sequelize, Sequelize);
 
 /*Veza 1-1*/
 db.users.hasMany(db.statistics)
@@ -59,6 +61,12 @@ db.library.belongsTo(db.institutions)
 
 db.roles.hasMany(db.users, {foreignKey: 'roleFK', sourceKey: 'id'});
 db.users.belongsTo(db.roles, {foreignKey: 'roleFK', targetKey: 'id'});
+
+db.roles.hasMany(db.roleClaim, {foreignKey: 'roleFK', sourceKey: 'id'});
+db.roleClaim.belongsTo(db.roles, {foreignKey: 'roleFK', targetKey: 'id'});
+
+db.users.hasMany(db.userClaim, {foreignKey: 'userFK', sourceKey: 'id'});
+db.userClaim.belongsTo(db.users, {foreignKey: 'userFK', targetKey: 'id'});
 
 db.institutions.hasMany(db.users, {foreignKey: 'institutionFK', sourceKey: 'id'});
 db.users.belongsTo(db.institutions, {foreignKey: 'institutionFK', targetKey: 'id'});
