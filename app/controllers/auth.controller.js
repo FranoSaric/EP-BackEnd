@@ -131,6 +131,7 @@ exports.signIn = (req, res) => {
       var token = jwt.sign({ id: korisnik.brojIndexa }, config.secret, {
         expiresIn: 86400 // expires in 24 hours
       });
+      console.log("token",token)
         korisnik.getUloga().then(roles => {
           res.status(200).send({
             brojIndexa: korisnik.brojIndexa,
