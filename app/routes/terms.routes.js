@@ -19,13 +19,13 @@ module.exports = function (app) {
         controller.getTerms
     );
     app.post(
-        "/createTerm/:id?",
+        "/createTerm",
         [authJwt.verifyToken, authJwt.isEmployee],
         controller.createTerm
     );
 
     app.delete(
-      "/deleteTerm/:id",
+      "/deleteTerm",
       [authJwt.verifyToken, authJwt.isEmployee],
         controller.deleteTerm
     )

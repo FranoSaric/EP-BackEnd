@@ -23,7 +23,7 @@ module.exports = function (app) {
     );
 
     app.delete(
-      "/deleteLibrary/:id",
+      "/deleteLibrary",
       [authJwt.verifyToken, authJwt.isEmployee],
         controller.deleteLibrary
     )

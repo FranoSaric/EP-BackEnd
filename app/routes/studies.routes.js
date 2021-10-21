@@ -17,13 +17,13 @@ module.exports = function (app) {
         controller.getStudies
     );
     app.post(
-        "/createStudy/:id?",
+        "/createStudy",
         [authJwt.verifyToken, authJwt.isEmployee],
         controller.createStudy
     );
 
     app.delete(
-      "/deleteStudy/:id",
+      "/deleteStudy",
       [authJwt.verifyToken, authJwt.isEmployee],
         controller.deleteStudy
     )

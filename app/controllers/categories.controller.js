@@ -11,11 +11,11 @@ exports.createCategory = (req, res) => {
         });
         return;
     }
-    if (req.params.id) {
+    if (req.body.id) {
         Categories.findOne({
             where: {
                 id: {
-                    [Op.eq]: req.params.id,
+                    [Op.eq]: req.body.id,
                 },
             },
         }).then((categories) => {
@@ -25,6 +25,7 @@ exports.createCategory = (req, res) => {
                 })
                 .then(() => {
                     res.status(200).send({
+                        status: 101,
                         message: "Book category successfully edited.",
                     });
                 })
@@ -40,6 +41,7 @@ exports.createCategory = (req, res) => {
         })
             .then(() => {
                 res.status(200).send({
+                    status: 101,
                     message: "Book category successfully entered.",
                 });
             })
@@ -66,11 +68,12 @@ exports.getCategories = (req, res) => {
 exports.deleteCategory = (req, res) => {
     Categories.destroy({
         where: {
-            id: req.params.id,
+            id: req.body.id,
         },
     })
         .then(() => {
             res.status(200).send({
+                status: 101,
                 message: "Category successfully deleted.",
             });
         })

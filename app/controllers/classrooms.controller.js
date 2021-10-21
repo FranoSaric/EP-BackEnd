@@ -17,11 +17,11 @@ exports.createClassroom = (req, res) => {
         });
         return;
     }
-    if (req.params.id) {
+    if (req.body.id) {
         Classrooms.findOne({
             where: {
                 id: {
-                    [Op.eq]: req.params.id,
+                    [Op.eq]: req.body.id,
                 },
             },
         }).then((classrooms) => {
@@ -96,7 +96,7 @@ exports.getClassrooms = (req, res) => {
 exports.deleteClassroom = (req, res) => {
     Classrooms.destroy({
         where: {
-            id: req.params.id,
+            id: req.body.id,
         },
     })
         .then(() => {

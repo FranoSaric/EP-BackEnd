@@ -32,7 +32,7 @@ module.exports = function (app) {
     );
 
     app.delete(
-      "/deleteUser/:id",
+      "/deleteUser",
       [authJwt.verifyToken, authJwt.isEmployee],
         controller.deleteUser
     )

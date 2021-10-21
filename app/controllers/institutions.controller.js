@@ -16,11 +16,11 @@ exports.createInstitution = (req, res) => {
         });
         return;
     }
-    if (req.params.id) {
+    if (req.body.id) {
         Institutions.findOne({
             where: {
                 id: {
-                    [Op.eq]: req.params.id,
+                    [Op.eq]: req.body.id,
                 },
             },
         }).then((institutions) => {
@@ -77,7 +77,7 @@ exports.getInstitutions = (req, res) => {
 exports.deleteInstitution = (req, res) => {
     Institutions.destroy({
         where: {
-            id: req.params.id,
+            id: req.body.id,
         },
     })
         .then(() => {

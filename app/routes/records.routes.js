@@ -18,13 +18,13 @@ module.exports = function (app) {
     );
 
     app.post(
-        "/createRecord/:id?",
+        "/createRecord",
         [authJwt.verifyToken, authJwt.isEmployee],
         controller.createRecord
     );
 
     app.delete(
-      "/deleteRecord/:id",
+      "/deleteRecord",
       [authJwt.verifyToken, authJwt.isEmployee],
         controller.deleteRecord
     )

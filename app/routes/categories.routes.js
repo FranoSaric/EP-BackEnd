@@ -17,13 +17,13 @@ module.exports = function (app) {
         controller.getCategories
     );
     app.post(
-        "/createCategory/:id?",
+        "/createCategory",
         [authJwt.verifyToken, authJwt.isEmployee],
         controller.createCategory
     );
 
     app.delete(
-      "/deleteCategory/:id",
+      "/deleteCategory",
       [authJwt.verifyToken, authJwt.isEmployee],
         controller.deleteCategory
     )

@@ -17,13 +17,13 @@ module.exports = function (app) {
         controller.getInstitutions
     );
     app.post(
-        "/createInstitution/:id?",
+        "/createInstitution",
         [authJwt.verifyToken, authJwt.isEmployee],
         controller.createInstitution
     );
 
     app.delete(
-        "/deleteInstitution/:id",
+        "/deleteInstitution",
         [authJwt.verifyToken, authJwt.isEmployee],
           controller.deleteInstitution
       )

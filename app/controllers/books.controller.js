@@ -17,11 +17,11 @@ exports.createBook = (req, res) => {
         });
         return;
     }
-    if (req.params.id) {
+    if (req.body.id) {
         Books.findOne({
             where: {
                 id: {
-                    [Op.eq]: req.params.id,
+                    [Op.eq]: req.body.id,
                 },
             },
         }).then((books) => {
@@ -39,8 +39,9 @@ exports.createBook = (req, res) => {
                     },
                 })
                     .then((categoryFK) => {
-                        knjiga.setCategory(categoryFK).then(() => {
+                        books.setCategory(categoryFK).then(() => {
                             res.status(200).send({
+                                status: 101,
                                 message: "Book successfully edited.",
                             });
                         });
@@ -69,6 +70,7 @@ exports.createBook = (req, res) => {
                     .then((categoryFK) => {
                         books.setCategory(categoryFK).then(() => {
                             res.status(200).send({
+                                status: 101,
                                 message: "Book successfully entered.",
                             });
                         });
@@ -88,8 +90,7 @@ exports.getBooks = (req, res) => {
         where: {},
         include: [
             {
-                model: Users,
-                where: { indexNumber: req.params.id },
+                model: Categories,
             },
         ],
     })
@@ -106,11 +107,12 @@ exports.getBooks = (req, res) => {
 exports.deleteBook = (req, res) => {
     Books.destroy({
         where: {
-            id: req.params.id,
+            id: req.body.id,
         },
     })
         .then(() => {
             res.status(200).send({
+                status: 101,
                 message: "Book successfully deleted.",
             });
         })

@@ -12,11 +12,11 @@ exports.createStatistics = (req, res) => {
         });
         return;
     }
-    if (req.params.id) {
+    if (req.body.id) {
         Statistics.findOne({
             where: {
                 id: {
-                    [Op.eq]: req.params.id,
+                    [Op.eq]: req.body.id,
                 },
             },
         }).then((statistics) => {
@@ -87,7 +87,7 @@ exports.getStatistics = (req, res) => {
 exports.deleteStatistic = (req, res) => {
     Statistics.destroy({
         where: {
-            id: req.params.id,
+            id: req.body.id,
         },
     })
         .then(() => {

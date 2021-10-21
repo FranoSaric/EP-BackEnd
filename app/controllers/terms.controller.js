@@ -20,11 +20,11 @@ exports.createTerm = (req, res) => {
         });
         return;
     }
-    if (req.params.id) {
+    if (req.body.id) {
         Terms.findOne({
             where: {
                 id: {
-                    [Op.eq]: req.params.id,
+                    [Op.eq]: req.body.id,
                 },
             },
         })
@@ -144,7 +144,7 @@ exports.getTerms = (req, res) => {
 exports.deleteTerm = (req, res) => {
     Terms.destroy({
         where: {
-            id: req.params.id,
+            id: req.body.id,
         },
     })
         .then(() => {

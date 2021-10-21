@@ -17,11 +17,11 @@ exports.createStudy = (req, res) => {
         });
         return;
     }
-    if (req.params.id) {
+    if (req.body.id) {
         Studies.findOne({
             where: {
                 id: {
-                    [Op.eq]: req.params.id,
+                    [Op.eq]: req.body.id,
                 },
             },
         }).then((studies) => {
@@ -114,7 +114,7 @@ exports.getStudies = (req, res) => {
 exports.deleteStudy = (req, res) => {
     Studies.destroy({
         where: {
-            id: req.params.id,
+            id: req.body.id,
         },
     })
         .then(() => {

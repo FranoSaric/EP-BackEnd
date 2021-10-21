@@ -17,13 +17,13 @@ module.exports = function (app) {
         controller.getStatistics
     );
     app.post(
-        "/createStatistics/:id?",
+        "/createStatistics",
         [authJwt.verifyToken, authJwt.isEmployee],
         controller.createStatistics
     );
 
     app.delete(
-      "/deleteStatistic/:id",
+      "/deleteStatistic",
       [authJwt.verifyToken, authJwt.isEmployee],
         controller.deleteStatistic
     )

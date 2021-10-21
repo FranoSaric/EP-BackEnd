@@ -13,11 +13,11 @@ exports.createRecord = (req, res) => {
         });
         return;
     }
-    if (req.params.id) {
+    if (req.body.id) {
         Classrooms.findOne({
             where: {
                 id: {
-                    [Op.eq]: req.params.id,
+                    [Op.eq]: req.body.id,
                 },
             },
         })
@@ -123,7 +123,7 @@ exports.getRecords = (req, res) => {
 exports.deleteRecord = (req, res) => {
     Records.destroy({
         where: {
-            id: req.params.id,
+            id: req.body.id,
         },
     })
         .then(() => {

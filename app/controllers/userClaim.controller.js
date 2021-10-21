@@ -12,11 +12,11 @@ exports.createUserClaim = (req, res) => {
         });
         return;
     }
-    if (req.params.id) {
+    if (req.body.id) {
         UserClaim.findOne({
             where: {
                 id: {
-                    [Op.eq]: req.params.id,
+                    [Op.eq]: req.body.id,
                 },
             },
         }).then((userClaim) => {
@@ -87,7 +87,7 @@ exports.getUserClaim = (req, res) => {
 exports.deleteUserClaim = (req, res) => {
     UserClaim.destroy({
         where: {
-            id: req.params.id,
+            id: req.body.id,
         },
     })
         .then(() => {

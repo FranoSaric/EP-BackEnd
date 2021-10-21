@@ -17,13 +17,13 @@ module.exports = function (app) {
         controller.getBooks
     );
     app.post(
-        "/createBook/:id?",
+        "/createBook",
         [authJwt.verifyToken, authJwt.isEmployee],
         controller.createBook
     );
 
     app.delete(
-      "/deleteBook/:id",
+      "/deleteBook",
       [authJwt.verifyToken, authJwt.isEmployee],
         controller.deleteBook
     )

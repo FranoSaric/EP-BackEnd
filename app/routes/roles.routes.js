@@ -17,13 +17,13 @@ module.exports = function (app) {
         controller.getRoles
     );
     app.post(
-        "/createRole/:id?",
+        "/createRole",
         [authJwt.verifyToken, authJwt.isEmployee],
         controller.createRole
     );
 
     app.delete(
-        "/deleteRole/:id",
+        "/deleteRole",
         [authJwt.verifyToken, authJwt.isEmployee],
           controller.deleteRole
       )

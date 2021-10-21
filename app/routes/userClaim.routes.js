@@ -17,13 +17,13 @@ module.exports = function (app) {
         controller.getUserClaim
     );
     app.post(
-        "/createUserClaim/:id?",
+        "/createUserClaim",
         [authJwt.verifyToken, authJwt.isEmployee],
         controller.createUserClaim
     );
 
     app.delete(
-        "/deleteUserClaim/:id",
+        "/deleteUserClaim",
         [authJwt.verifyToken, authJwt.isEmployee],
           controller.deleteUserClaim
       )

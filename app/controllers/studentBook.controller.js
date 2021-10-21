@@ -18,11 +18,11 @@ exports.createStudentBook = (req, res) => {
         });
         return;
     }
-    if (req.params.id) {
+    if (req.body.id) {
         StudentBook.findOne({
             where: {
                 id: {
-                    [Op.eq]: req.params.id,
+                    [Op.eq]: req.body.id,
                 },
             },
         })
@@ -141,7 +141,7 @@ exports.getStudentBooks = (req, res) => {
 exports.deleteStudentBook = (req, res) => {
     StudentBook.destroy({
         where: {
-            id: req.params.id,
+            id: req.body.id,
         },
     })
         .then(() => {

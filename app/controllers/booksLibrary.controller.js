@@ -13,11 +13,11 @@ exports.createBookLibrary = (req, res) => {
         });
         return;
     }
-    if (req.params.id) {
+    if (req.body.id) {
         BooksLibrary.findOne({
             where: {
                 id: {
-                    [Op.eq]: req.params.id,
+                    [Op.eq]: req.body.id,
                 },
             },
         })
@@ -120,7 +120,7 @@ exports.getBooksLibrary = (req, res) => {
 exports.deleteBookLibrary = (req, res) => {
     BooksLibrary.destroy({
         where: {
-            id: req.params.id,
+            id: req.body.id,
         },
     })
         .then(() => {

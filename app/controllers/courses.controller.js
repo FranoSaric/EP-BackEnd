@@ -21,11 +21,11 @@ exports.createCourse = (req, res) => {
         });
         return;
     }
-    if (req.params.id) {
+    if (req.body.id) {
         Courses.findOne({
             where: {
                 id: {
-                    [Op.eq]: req.params.id,
+                    [Op.eq]: req.body.id,
                 },
             },
         })
@@ -121,7 +121,7 @@ exports.getCourses = (req, res) => {
         include: [
             {
                 model: Users,
-                where: { indexNumber: req.params.id },
+                where: { indexNumber: req.body.id },
             },
         ],
     })

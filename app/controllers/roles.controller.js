@@ -11,11 +11,11 @@ exports.createRole = (req, res) => {
         });
         return;
     }
-    if (req.params.id) {
+    if (req.body.id) {
         Roles.findOne({
             where: {
                 id: {
-                    [Op.eq]: req.params.id,
+                    [Op.eq]: req.body.id,
                 },
             },
         }).then((roles) => {
@@ -67,7 +67,7 @@ exports.getRoles = (req, res) => {
 exports.deleteRole = (req, res) => {
     Roles.destroy({
         where: {
-            id: req.params.id,
+            id: req.body.id,
         },
     })
         .then(() => {

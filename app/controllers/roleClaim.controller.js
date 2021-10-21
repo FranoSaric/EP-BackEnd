@@ -16,11 +16,11 @@ exports.createRoleClaim = (req, res) => {
         });
         return;
     }
-    if (req.params.id) {
+    if (req.body.id) {
         RoleClaim.findOne({
             where: {
                 id: {
-                    [Op.eq]: req.params.id,
+                    [Op.eq]: req.body.id,
                 },
             },
         }).then((roleClaim) => {
@@ -91,7 +91,7 @@ exports.getRoleClaim = (req, res) => {
 exports.deleteRoleClaim = (req, res) => {
     RoleClaim.destroy({
         where: {
-            id: req.params.id,
+            id: req.body.id,
         },
     })
         .then(() => {
