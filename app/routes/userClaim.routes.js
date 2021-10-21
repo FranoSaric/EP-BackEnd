@@ -21,4 +21,10 @@ module.exports = function (app) {
         [authJwt.verifyToken, authJwt.isEmployee],
         controller.createUserClaim
     );
+
+    app.delete(
+        "/deleteUserClaim/:id",
+        [authJwt.verifyToken, authJwt.isEmployee],
+          controller.deleteUserClaim
+      )
 };

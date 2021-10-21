@@ -21,4 +21,10 @@ module.exports = function (app) {
         [authJwt.verifyToken, authJwt.isEmployee],
         controller.createStatistics
     );
+
+    app.delete(
+      "/deleteStatistic/:id",
+      [authJwt.verifyToken, authJwt.isEmployee],
+        controller.deleteStatistic
+    )
 };

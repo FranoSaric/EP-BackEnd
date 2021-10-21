@@ -92,3 +92,21 @@ exports.getClassrooms = (req, res) => {
             });
         });
 };
+
+exports.deleteClassroom = (req, res) => {
+    Classrooms.destroy({
+        where: {
+            id: req.params.id,
+        },
+    })
+        .then(() => {
+            res.status(200).send({
+                message: "Classroom successfully deleted.",
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: "Classroom cannot be deleted.",
+            });
+        });
+};

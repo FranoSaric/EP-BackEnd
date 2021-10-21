@@ -21,4 +21,10 @@ module.exports = function (app) {
         [authJwt.verifyToken, authJwt.isEmployee],
         controller.createCourse
     );
+
+    app.delete(
+      "/deleteCourse/:id",
+      [authJwt.verifyToken, authJwt.isEmployee],
+        controller.deleteCourse
+    )
 };

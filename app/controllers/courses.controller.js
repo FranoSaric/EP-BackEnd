@@ -134,3 +134,21 @@ exports.getCourses = (req, res) => {
             });
         });
 };
+
+exports.deleteCourse = (req, res) => {
+    Courses.destroy({
+        where: {
+            id: req.params.id,
+        },
+    })
+        .then(() => {
+            res.status(200).send({
+                message: "Course successfully deleted.",
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: "Course cannot be deleted.",
+            });
+        });
+};

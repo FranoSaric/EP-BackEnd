@@ -22,4 +22,10 @@ module.exports = function (app) {
         [authJwt.verifyToken, authJwt.isEmployee],
         controller.createRecord
     );
+
+    app.delete(
+      "/deleteRecord/:id",
+      [authJwt.verifyToken, authJwt.isEmployee],
+        controller.deleteRecord
+    )
 };

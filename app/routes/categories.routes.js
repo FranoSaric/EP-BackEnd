@@ -21,4 +21,10 @@ module.exports = function (app) {
         [authJwt.verifyToken, authJwt.isEmployee],
         controller.createCategory
     );
+
+    app.delete(
+      "/deleteCategory/:id",
+      [authJwt.verifyToken, authJwt.isEmployee],
+        controller.deleteCategory
+    )
 };

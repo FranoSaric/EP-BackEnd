@@ -87,3 +87,21 @@ exports.getRoleClaim = (req, res) => {
             });
         });
 };
+
+exports.deleteRoleClaim = (req, res) => {
+    RoleClaim.destroy({
+        where: {
+            id: req.params.id,
+        },
+    })
+        .then(() => {
+            res.status(200).send({
+                message: "Role claim successfully deleted.",
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: "Role claim cannot be deleted.",
+            });
+        });
+};

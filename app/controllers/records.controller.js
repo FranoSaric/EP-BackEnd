@@ -109,13 +109,31 @@ exports.createRecord = (req, res) => {
     }
 };
 exports.getRecords = (req, res) => {
-    Evidencija.findAll({})
+    Records.findAll({})
         .then((data) => {
             res.send(data);
         })
         .catch((err) => {
             res.status(500).send({
                 message: err.message || "Retrieval error.",
+            });
+        });
+};
+
+exports.deleteRecord = (req, res) => {
+    Records.destroy({
+        where: {
+            id: req.params.id,
+        },
+    })
+        .then(() => {
+            res.status(200).send({
+                message: "Record successfully deleted.",
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: "Record cannot be deleted.",
             });
         });
 };

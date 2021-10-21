@@ -102,3 +102,21 @@ exports.getBooks = (req, res) => {
             });
         });
 };
+
+exports.deleteBook = (req, res) => {
+    Books.destroy({
+        where: {
+            id: req.params.id,
+        },
+    })
+        .then(() => {
+            res.status(200).send({
+                message: "Book successfully deleted.",
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: "Book cannot be deleted.",
+            });
+        });
+};

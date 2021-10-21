@@ -73,3 +73,21 @@ exports.getInstitutions = (req, res) => {
             });
         });
 };
+
+exports.deleteInstitution = (req, res) => {
+    Institutions.destroy({
+        where: {
+            id: req.params.id,
+        },
+    })
+        .then(() => {
+            res.status(200).send({
+                message: "Institution successfully deleted.",
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: "Institution cannot be deleted.",
+            });
+        });
+};

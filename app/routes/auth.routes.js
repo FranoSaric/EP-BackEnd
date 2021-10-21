@@ -30,4 +30,10 @@ module.exports = function (app) {
         [authJwt.verifyToken, authJwt.isEmployee],
         controller.getUsers
     );
+
+    app.delete(
+      "/deleteUser/:id",
+      [authJwt.verifyToken, authJwt.isEmployee],
+        controller.deleteUser
+    )
 };

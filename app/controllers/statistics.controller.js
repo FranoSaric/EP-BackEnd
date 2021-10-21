@@ -83,3 +83,21 @@ exports.getStatistics = (req, res) => {
             });
         });
 };
+
+exports.deleteStatistic = (req, res) => {
+    Statistics.destroy({
+        where: {
+            id: req.params.id,
+        },
+    })
+        .then(() => {
+            res.status(200).send({
+                message: "Statistic claim successfully deleted.",
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: "Statistic claim cannot be deleted.",
+            });
+        });
+};

@@ -21,4 +21,10 @@ module.exports = function (app) {
         [authJwt.verifyToken, authJwt.isEmployee],
         controller.createRole
     );
+
+    app.delete(
+        "/deleteRole/:id",
+        [authJwt.verifyToken, authJwt.isEmployee],
+          controller.deleteRole
+      )
 };

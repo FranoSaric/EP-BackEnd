@@ -7,10 +7,7 @@ const Library = db.library;
 const Op = db.Sequelize.Op;
 
 exports.createBookLibrary = (req, res) => {
-    if (
-        !req.body.libraryFK ||
-        !req.body.bookFK
-    ) {
+    if (!req.body.libraryFK || !req.body.bookFK) {
         res.status(400).send({
             message: "All fields are required!",
         });
@@ -108,7 +105,6 @@ exports.createBookLibrary = (req, res) => {
     }
 };
 
-
 exports.getBooksLibrary = (req, res) => {
     BooksLibrary.findAll({})
         .then((data) => {
@@ -117,6 +113,24 @@ exports.getBooksLibrary = (req, res) => {
         .catch((err) => {
             res.status(500).send({
                 message: err.message || "Retrieval error.",
+            });
+        });
+};
+
+exports.deleteBookLibrary = (req, res) => {
+    BooksLibrary.destroy({
+        where: {
+            id: req.params.id,
+        },
+    })
+        .then(() => {
+            res.status(200).send({
+                message: "Book library successfully deleted.",
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: "Book library cannot be deleted.",
             });
         });
 };

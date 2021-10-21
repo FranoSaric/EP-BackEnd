@@ -83,3 +83,21 @@ exports.getUserClaim = (req, res) => {
             });
         });
 };
+
+exports.deleteUserClaim = (req, res) => {
+    UserClaim.destroy({
+        where: {
+            id: req.params.id,
+        },
+    })
+        .then(() => {
+            res.status(200).send({
+                message: "User claim successfully deleted.",
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: "User claim cannot be deleted.",
+            });
+        });
+};

@@ -203,11 +203,11 @@ exports.signIn = (req, res) => {
                     },
                 ],
             }).then((roleClaim) => {
-                console.log("roleClaim.length",roleClaim.length)
+                console.log("roleClaim.length", roleClaim.length);
                 for (let i = 0; i < roleClaim.length; i++) {
-                    console.log("roletype", roleClaim[i].dataValues.claimType)
+                    console.log("roletype", roleClaim[i].dataValues.claimType);
                     let type = roleClaim[i].dataValues.claimType;
-                    
+
                     if (roleClaim[i].dataValues.claimType in claims) {
                         for (let j = 0; j < type.length; j++) {
                             if (roleClaim[j] !== undefined) {
@@ -216,7 +216,7 @@ exports.signIn = (req, res) => {
                                 ) {
                                     let claim =
                                         roleClaim[j].dataValues.claimValue;
-                                        claims[type].push(claim);
+                                    claims[type].push(claim);
                                 }
                             }
                         }
@@ -228,7 +228,7 @@ exports.signIn = (req, res) => {
                         //     "claimValue",
                         //     roleClaim[i].dataValues.claimValue
                         // );
-                    }else{
+                    } else {
                         let claimsArray = [];
                         for (let j = 0; j < type.length; j++) {
                             if (roleClaim[j] !== undefined) {
@@ -237,7 +237,7 @@ exports.signIn = (req, res) => {
                                 ) {
                                     let claim =
                                         roleClaim[j].dataValues.claimValue;
-                                        claimsArray.push(claim);
+                                    claimsArray.push(claim);
                                 }
                             }
                         }
@@ -256,7 +256,7 @@ exports.signIn = (req, res) => {
                     email: users.email,
                     roles: roles.name,
                     accessToken: token,
-                    claims: claims
+                    claims: claims,
                 });
             });
         })
@@ -314,13 +314,31 @@ exports.findUser = (req, res) => {
 };
 
 exports.getUsers = (req, res) => {
-    Korisnik.findAll({})
+    Users.findAll({})
         .then((data) => {
             res.send(data);
         })
         .catch((err) => {
             res.status(500).send({
                 message: err.message || "Retrieval error.",
+            });
+        });
+};
+
+exports.deleteUser = (req, res) => {
+    Users.destroy({
+        where: {
+            id: req.params.id,
+        },
+    })
+        .then(() => {
+            res.status(200).send({
+                message: "User successfully deleted.",
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: "User cannot be deleted.",
             });
         });
 };

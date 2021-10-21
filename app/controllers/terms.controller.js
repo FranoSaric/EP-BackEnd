@@ -140,3 +140,21 @@ exports.getTerms = (req, res) => {
             });
         });
 };
+
+exports.deleteTerm = (req, res) => {
+    Terms.destroy({
+        where: {
+            id: req.params.id,
+        },
+    })
+        .then(() => {
+            res.status(200).send({
+                message: "Term successfully deleted.",
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: "Term cannot be deleted.",
+            });
+        });
+};

@@ -62,3 +62,21 @@ exports.getCategories = (req, res) => {
             });
         });
 };
+
+exports.deleteCategory = (req, res) => {
+    Categories.destroy({
+        where: {
+            id: req.params.id,
+        },
+    })
+        .then(() => {
+            res.status(200).send({
+                message: "Category successfully deleted.",
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: "Category cannot be deleted.",
+            });
+        });
+};

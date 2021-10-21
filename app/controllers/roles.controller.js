@@ -35,7 +35,6 @@ exports.createRole = (req, res) => {
                 });
         });
     } else {
-        console.log(Roles);
         Roles.create({
             name: req.body.name,
         })
@@ -61,6 +60,24 @@ exports.getRoles = (req, res) => {
         .catch((err) => {
             res.status(500).send({
                 message: err.message || "Retrieval error.",
+            });
+        });
+};
+
+exports.deleteRole = (req, res) => {
+    Roles.destroy({
+        where: {
+            id: req.params.id,
+        },
+    })
+        .then(() => {
+            res.status(200).send({
+                message: "Role successfully deleted.",
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: "Role cannot be deleted.",
             });
         });
 };

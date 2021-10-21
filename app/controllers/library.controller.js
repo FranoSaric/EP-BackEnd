@@ -47,3 +47,21 @@ exports.getLibraries = (req, res) => {
             });
         });
 };
+
+exports.deleteLibrary = (req, res) => {
+  Library.destroy({
+      where: {
+          id: req.params.id,
+      },
+  })
+      .then(() => {
+          res.status(200).send({
+              message: "Library successfully deleted.",
+          });
+      })
+      .catch((err) => {
+          res.status(500).send({
+              message: "Library cannot be deleted.",
+          });
+      });
+};

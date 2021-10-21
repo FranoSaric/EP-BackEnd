@@ -110,3 +110,21 @@ exports.getStudies = (req, res) => {
             });
         });
 };
+
+exports.deleteStudy = (req, res) => {
+    Studies.destroy({
+        where: {
+            id: req.params.id,
+        },
+    })
+        .then(() => {
+            res.status(200).send({
+                message: "Study successfully deleted.",
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: "Study cannot be deleted.",
+            });
+        });
+};

@@ -137,3 +137,21 @@ exports.getStudentBooks = (req, res) => {
             });
         });
 };
+
+exports.deleteStudentBook = (req, res) => {
+    StudentBook.destroy({
+        where: {
+            id: req.params.id,
+        },
+    })
+        .then(() => {
+            res.status(200).send({
+                message: "Student book claim successfully deleted.",
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: "Student book claim cannot be deleted.",
+            });
+        });
+};
