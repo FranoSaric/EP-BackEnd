@@ -169,6 +169,7 @@ exports.signIn = (req, res) => {
             });
 
             let claims = {};
+            let br=0;
 
             UserClaim.findAll({
                 include: [
@@ -186,6 +187,8 @@ exports.signIn = (req, res) => {
                             if (type === userClaim[l].dataValues.claimType) {
                                 let claim = userClaim[l].dataValues.claimValue;
                                 claimsArray.push(claim);
+                                br++;
+                                console.log("brojac",br)
                             }
                         }
                     }
@@ -203,44 +206,36 @@ exports.signIn = (req, res) => {
                     },
                 ],
             }).then((roleClaim) => {
-                console.log("roleClaim.length", roleClaim.length);
+                console.log("roleClaim.length", roleClaim[0].dataValues.claimType);
+                console.log("roleClaim", roleClaim);
                 for (let i = 0; i < roleClaim.length; i++) {
                     console.log("roletype", roleClaim[i].dataValues.claimType);
                     let type = roleClaim[i].dataValues.claimType;
+                    console.log("TYPE LENGTH", type.length)
 
                     if (roleClaim[i].dataValues.claimType in claims) {
-                        for (let j = 0; j < type.length; j++) {
-                            if (roleClaim[j] !== undefined) {
+                            if (roleClaim[i] !== undefined) {
                                 if (
-                                    type === roleClaim[j].dataValues.claimType
+                                    type === roleClaim[i].dataValues.claimType
                                 ) {
                                     let claim =
-                                        roleClaim[j].dataValues.claimValue;
+                                        roleClaim[i].dataValues.claimValue;
                                     claims[type].push(claim);
                                 }
                             }
-                        }
-                        // console.log(
-                        //     "claimType",
-                        //     roleClaim[i].dataValues.claimType
-                        // );
-                        // console.log(
-                        //     "claimValue",
-                        //     roleClaim[i].dataValues.claimValue
-                        // );
                     } else {
+                      console.log("usao")
                         let claimsArray = [];
-                        for (let j = 0; j < type.length; j++) {
-                            if (roleClaim[j] !== undefined) {
+                          console.log("ROLECLAIM", roleClaim[i])
+                            if (roleClaim[i] !== undefined) {
                                 if (
-                                    type === roleClaim[j].dataValues.claimType
+                                    type === roleClaim[i].dataValues.claimType
                                 ) {
                                     let claim =
-                                        roleClaim[j].dataValues.claimValue;
+                                        roleClaim[i].dataValues.claimValue;
                                     claimsArray.push(claim);
                                 }
                             }
-                        }
                         claims[type] = claimsArray;
                     }
                 }
