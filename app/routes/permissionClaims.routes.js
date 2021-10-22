@@ -1,6 +1,6 @@
 const { verifySignUp } = require("../middleware");
 const { authJwt } = require("../middleware");
-const controller = require("../controllers/roleClaim.controller");
+const controller = require("../controllers/permissionClaims.controller");
 
 module.exports = function (app) {
     app.use(function (req, res, next) {
@@ -11,20 +11,20 @@ module.exports = function (app) {
         next();
     });
 
-    app.post(
-        "/getRoleClaim",
+    app.get(
+        "/getPermissionClaims",
         [authJwt.verifyToken, authJwt.isEmployee],
-        controller.getRoleClaim
+        controller.getPermissionClaims
     );
     app.post(
-        "/createRoleClaim",
+        "/createPermissionClaim",
         [authJwt.verifyToken, authJwt.isEmployee],
-        controller.createRoleClaim
+        controller.createPermissionClaim
     );
 
     app.delete(
-        "/deleteRoleClaim",
+        "/deletePermissionClaim",
         [authJwt.verifyToken, authJwt.isEmployee],
-          controller.deleteRoleClaim
+          controller.deletePermissionClaim
       )
 };

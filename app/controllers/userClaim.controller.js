@@ -2,11 +2,12 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const UserClaim = db.userClaim;
 const Users = db.users;
+const PermissionClaims = db.permissionClaims;
 
 const Op = db.Sequelize.Op;
 
 exports.createUserClaim = (req, res) => {
-    if (!req.body.claimType || !req.body.claimValue || !req.body.userFK) {
+    if (!req.body.permissionClaimFK || !req.body.userFK) {
         res.status(400).send({
             message: "All fields are required!",
         });
@@ -20,10 +21,7 @@ exports.createUserClaim = (req, res) => {
                 },
             },
         }).then((userClaim) => {
-            userClaim.update({
-                claimType: req.body.claimType,
-                claimValue: req.body.claimValue,
-            });
+            userClaim.update({});
             if (req.body.userFK) {
                 Users.findOne({
                     where: {
@@ -32,11 +30,29 @@ exports.createUserClaim = (req, res) => {
                         },
                     },
                 })
-                    .then(() => {
-                        res.status(200).send({
-                            message: "User claim successfully edited.",
-                        });
-                    })
+                .then((userFK) => {
+                    UserClaim.setUser(userFK).then(() => {
+                        if (req.body.permissionClaimFK) {
+                            PermissionClaims.findOne({
+                                where: {
+                                    id: {
+                                        [Op.eq]: req.body.permissionClaimFK,
+                                    },
+                                },
+                            }).then((permissionClaimFK) => {
+                                userClaim
+                                    .setPermissionClaim(permissionClaimFK)
+                                    .then(() => {
+                                        res.status(200).send({
+                                            status: 101,
+                                            message:
+                                                "User claim successfully edited.",
+                                        });
+                                    });
+                            });
+                        }
+                    });
+                })
                     .catch((err) => {
                         res.status(500).send({
                             message: err.message || "Error editing user claim.",
@@ -45,10 +61,7 @@ exports.createUserClaim = (req, res) => {
             }
         });
     } else {
-        UserClaim.create({
-            claimType: req.body.claimType,
-            claimValue: req.body.claimValue,
-        }).then((userClaim) => {
+        UserClaim.create({}).then((userClaim) => {
             if (req.body.userFK) {
                 Users.findOne({
                     where: {
@@ -57,13 +70,29 @@ exports.createUserClaim = (req, res) => {
                         },
                     },
                 })
-                    .then((userFK) => {
-                        userClaim.setUser(userFK).then(() => {
-                            res.status(200).send({
-                                message: "User claim successfully entered.",
+                .then((userFK) => {
+                    userClaim.setUser(userFK).then(() => {
+                        if (req.body.permissionClaimFK) {
+                            PermissionClaims.findOne({
+                                where: {
+                                    id: {
+                                        [Op.eq]: req.body.permissionClaimFK,
+                                    },
+                                },
+                            }).then((permissionClaimFK) => {
+                                userClaim
+                                    .setPermissionClaim(permissionClaimFK)
+                                    .then(() => {
+                                        res.status(200).send({
+                                            status: 101,
+                                            message:
+                                                "User claim successfully entered.",
+                                        });
+                                    });
                             });
-                        });
-                    })
+                        }
+                    });
+                })
                     .catch((err) => {
                         res.status(500).send({ message: err.message });
                     });

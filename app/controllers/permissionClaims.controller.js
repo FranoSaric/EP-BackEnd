@@ -1,58 +1,62 @@
 const db = require("../models");
 const config = require("../config/auth.config");
-const Roles = db.roles;
+const PermissionClaims = db.permissionClaims;
 
 const Op = db.Sequelize.Op;
 
-exports.createRole = (req, res) => {
-    if (!req.body.name) {
+exports.createPermissionClaim = (req, res) => {
+    if (!req.body.type || !req.body.value) {
         res.status(400).send({
-            message: "Role name is required!",
+            message: "All fields are required!",
         });
         return;
     }
     if (req.body.id) {
-        Roles.findOne({
+        PermissionClaims.findOne({
             where: {
                 id: {
                     [Op.eq]: req.body.id,
                 },
             },
-        }).then((roles) => {
-            roles
+        }).then((permissionClaims) => {
+            permissionClaims
                 .update({
-                    name: req.body.name,
+                    type: req.body.type,
+                    value: req.body.value
                 })
                 .then(() => {
                     res.status(200).send({
-                        message: "Role successfully edited.",
+                        status: 101,
+                        message: "Permission claim successfully edited.",
                     });
                 })
                 .catch((err) => {
                     res.status(500).send({
-                        message: err.message || "Error editing role.",
+                        message: err.message || "Error editing permission claim.",
                     });
                 });
         });
     } else {
-        Roles.create({
-            name: req.body.name,
+        PermissionClaims.create({
+            type: req.body.type,
+            value: req.body.value
         })
             .then(() => {
                 res.status(200).send({
-                    message: "Role successfully entered.",
+                    status: 101,
+                    message: "Permission claim successfully entered.",
                 });
             })
             .catch((err) => {
                 res.status(500).send({
-                    message: err.message || "Error creating role.",
+                    message: err.message || "Error creating permission claim.",
                 });
             });
     }
 };
 
-exports.getRoles = (req, res) => {
-    Roles.findAll({})
+exports.getPermissionClaims = (req, res) => {
+    PermissionClaims.findAll({})
         .then((data) => {
             res.send(data);
         })
@@ -63,20 +67,21 @@ exports.getRoles = (req, res) => {
         });
 };
 
-exports.deleteRole = (req, res) => {
-    Roles.destroy({
+exports.deletePermissionClaim = (req, res) => {
+    PermissionClaims.destroy({
         where: {
             id: req.body.id,
         },
     })
         .then(() => {
             res.status(200).send({
-                message: "Role successfully deleted.",
+                status: 101,
+                message: "Permission claim successfully deleted.",
             });
         })
         .catch((err) => {
             res.status(500).send({
-                message: "Role cannot be deleted.",
+                message: "Permission claim cannot be deleted.",
             });
         });
 };

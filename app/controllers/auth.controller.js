@@ -8,6 +8,7 @@ const Roles = db.roles;
 const Institutions = db.institutions;
 const UserClaim = db.userClaim;
 const RoleClaim = db.roleClaim;
+const PermissionClaims = db.permissionClaims;
 const Op = db.Sequelize.Op;
 const { Sequelize } = require("sequelize");
 var jwt = require("jsonwebtoken");
@@ -175,26 +176,26 @@ exports.signIn = (req, res) => {
                 include: [
                     {
                         model: Users,
-                        //  required: false
+                    },
+                    {
+                        model: PermissionClaims,
                     },
                 ],
             }).then((userClaim) => {
+                console.log("permission claim", userClaim[0].dataValues.permissionClaim)
                 for (let k = 0; k < userClaim.length; k++) {
-                    let type = userClaim[k].dataValues.claimType;
+                    let type = userClaim[k].dataValues.permissionClaim.dataValues.type;
                     let claimsArray = [];
                     for (let l = 0; l < type.length; l++) {
                         if (userClaim[l] !== undefined) {
-                            if (type === userClaim[l].dataValues.claimType) {
-                                let claim = userClaim[l].dataValues.claimValue;
+                            if (type === userClaim[l].dataValues.permissionClaim.dataValues.type) {
+                                let claim = userClaim[l].dataValues.permissionClaim.dataValues.value;
                                 claimsArray.push(claim);
                                 br++;
-                                console.log("brojac",br)
                             }
                         }
                     }
                     claims[type] = claimsArray;
-                    // console.log("claimType",userClaim[i].dataValues.claimType)
-                    // console.log("claimValue",userClaim[i].dataValues.claimValue)
                 }
             });
 
@@ -202,37 +203,33 @@ exports.signIn = (req, res) => {
                 include: [
                     {
                         model: Roles,
-                        //  required: false
+                    },
+                    {
+                        model: PermissionClaims,
                     },
                 ],
             }).then((roleClaim) => {
-                console.log("roleClaim.length", roleClaim[0].dataValues.claimType);
-                console.log("roleClaim", roleClaim);
                 for (let i = 0; i < roleClaim.length; i++) {
-                    console.log("roletype", roleClaim[i].dataValues.claimType);
-                    let type = roleClaim[i].dataValues.claimType;
-                    console.log("TYPE LENGTH", type.length)
+                    let type = roleClaim[i].dataValues.permissionClaim.dataValues.type;
 
-                    if (roleClaim[i].dataValues.claimType in claims) {
+                    if (roleClaim[i].dataValues.permissionClaim.dataValues.type in claims) {
                             if (roleClaim[i] !== undefined) {
                                 if (
-                                    type === roleClaim[i].dataValues.claimType
+                                    type === roleClaim[i].dataValues.permissionClaim.dataValues.type
                                 ) {
                                     let claim =
-                                        roleClaim[i].dataValues.claimValue;
+                                        roleClaim[i].dataValues.permissionClaim.dataValues.value;
                                     claims[type].push(claim);
                                 }
                             }
                     } else {
-                      console.log("usao")
                         let claimsArray = [];
-                          console.log("ROLECLAIM", roleClaim[i])
                             if (roleClaim[i] !== undefined) {
                                 if (
-                                    type === roleClaim[i].dataValues.claimType
+                                    type === roleClaim[i].dataValues.permissionClaim.dataValues.type
                                 ) {
                                     let claim =
-                                        roleClaim[i].dataValues.claimValue;
+                                        roleClaim[i].dataValues.permissionClaim.dataValues.value;
                                     claimsArray.push(claim);
                                 }
                             }

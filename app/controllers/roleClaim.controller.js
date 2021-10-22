@@ -2,15 +2,12 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const RoleClaim = db.roleClaim;
 const Roles = db.roles;
+const PermissionClaims = db.permissionClaims;
 
 const Op = db.Sequelize.Op;
 
 exports.createRoleClaim = (req, res) => {
-    if (
-        !req.body.claimType ||
-        !req.body.claimValue||
-        !req.body.roleFK
-    ) {
+    if (!req.body.permissionClaimFK || !req.body.roleFK) {
         res.status(400).send({
             message: "All fields are required!",
         });
@@ -24,35 +21,7 @@ exports.createRoleClaim = (req, res) => {
                 },
             },
         }).then((roleClaim) => {
-            roleClaim.update({
-                claimType: req.body.claimType,
-                claimValue: req.body.claimValue
-            });
-            if (req.body.roleFK) {
-                Roles.findOne({
-                    where: {
-                        id: {
-                            [Op.eq]: req.body.roleFK,
-                        },
-                    },
-                })
-                    .then(() => {
-                        res.status(200).send({
-                            message: "Role claim successfully edited.",
-                        });
-                    })
-                    .catch((err) => {
-                        res.status(500).send({
-                            message: err.message || "Error editing role claim.",
-                        });
-                    });
-            }
-        });
-    } else {
-        RoleClaim.create({
-            claimType: req.body.claimType,
-                claimValue: req.body.claimValue
-        }).then((roleClaim) => {
+            roleClaim.update({});
             if (req.body.roleFK) {
                 Roles.findOne({
                     where: {
@@ -63,9 +32,67 @@ exports.createRoleClaim = (req, res) => {
                 })
                     .then((roleFK) => {
                         roleClaim.setRole(roleFK).then(() => {
-                            res.status(200).send({
-                                message: "Role claim successfully entered.",
-                            });
+                            if (req.body.permissionClaimFK) {
+                                PermissionClaims.findOne({
+                                    where: {
+                                        id: {
+                                            [Op.eq]: req.body.permissionClaimFK,
+                                        },
+                                    },
+                                }).then((permissionClaimFK) => {
+                                    roleClaim
+                                        .setPermissionClaim(permissionClaimFK)
+                                        .then(() => {
+                                            res.status(200).send({
+                                                status: 101,
+                                                message:
+                                                    "Role claim successfully edited.",
+                                            });
+                                        });
+                                });
+                            }
+                        });
+                    })
+                    .catch((err) => {
+                        res.status(500).send({
+                            message: err.message || "Error editing role claim.",
+                        });
+                    });
+            }
+        });
+    } else {
+        RoleClaim.create({}).then((roleClaim) => {
+            if (req.body.roleFK) {
+                Roles.findOne({
+                    where: {
+                        id: {
+                            [Op.eq]: req.body.roleFK,
+                        },
+                    },
+                })
+                    .then((roleFK) => {
+                        roleClaim.setRole(roleFK).then(() => {
+                            if (req.body.permissionClaimFK) {
+                                PermissionClaims.findOne({
+                                    where: {
+                                        id: {
+                                            [Op.eq]: req.body.permissionClaimFK,
+                                        },
+                                    },
+                                }).then((permissionClaimFK) => {
+                                    roleClaim
+                                        .setPermissionClaim(permissionClaimFK)
+                                        .then((result) => {
+                                            console.log("neki id", result);
+                                            res.status(200).send({
+                                                roleClaimId: result.dataValues.id,
+                                                status: 101,
+                                                message:
+                                                    "Role claim successfully entered.",
+                                            });
+                                        });
+                                });
+                            }
                         });
                     })
                     .catch((err) => {
@@ -77,7 +104,17 @@ exports.createRoleClaim = (req, res) => {
 };
 
 exports.getRoleClaim = (req, res) => {
-    RoleClaim.findAll({})
+    console.log("id sto dolazi",req.body)
+    RoleClaim.findAll({
+        include: [
+            {
+                model: PermissionClaims,
+            },
+        ],
+        where:{
+            roleFK:req.body.id
+        },
+    })
         .then((data) => {
             res.send(data);
         })
