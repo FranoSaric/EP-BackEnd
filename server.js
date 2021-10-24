@@ -21,16 +21,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 // force: true will drop the table if it already exists
-//   db.sequelize.sync({force: true}).then(() => {
-//   console.log('Drop and Resync Database with { force: true }');
-//   // initial()
-// })
+  db.sequelize.sync({force: true}).then(() => {
+  console.log('Drop and Resync Database with { force: true }');
+  // initial()
+})
 
 // simple route
-// app.get("/", (req, res) => {
-//   res.json({ message: "Welcome." });
-//   initial();
-// });
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome." });
+  initial();
+});
 
 // routes
 require("./app/routes/auth.routes")(app);
