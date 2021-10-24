@@ -304,7 +304,16 @@ exports.findUser = (req, res) => {
 };
 
 exports.getUsers = (req, res) => {
-  Users.findAll({})
+  Users.findAll({
+    include: [
+      {
+        model: Institutions,
+      },
+      {
+        model: Roles,
+      },
+    ],
+  })
     .then((data) => {
       res.send(data);
     })
