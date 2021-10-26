@@ -30,29 +30,29 @@ exports.createUserClaim = (req, res) => {
                         },
                     },
                 })
-                .then((userFK) => {
-                    UserClaim.setUser(userFK).then(() => {
-                        if (req.body.permissionClaimFK) {
-                            PermissionClaims.findOne({
-                                where: {
-                                    id: {
-                                        [Op.eq]: req.body.permissionClaimFK,
+                    .then((userFK) => {
+                        UserClaim.setUser(userFK).then(() => {
+                            if (req.body.permissionClaimFK) {
+                                PermissionClaims.findOne({
+                                    where: {
+                                        id: {
+                                            [Op.eq]: req.body.permissionClaimFK,
+                                        },
                                     },
-                                },
-                            }).then((permissionClaimFK) => {
-                                userClaim
-                                    .setPermissionClaim(permissionClaimFK)
-                                    .then(() => {
-                                        res.status(200).send({
-                                            status: 101,
-                                            message:
-                                                "User claim successfully edited.",
+                                }).then((permissionClaimFK) => {
+                                    userClaim
+                                        .setPermissionClaim(permissionClaimFK)
+                                        .then(() => {
+                                            res.status(200).send({
+                                                status: 101,
+                                                message:
+                                                    "User claim successfully edited.",
+                                            });
                                         });
-                                    });
-                            });
-                        }
-                    });
-                })
+                                });
+                            }
+                        });
+                    })
                     .catch((err) => {
                         res.status(500).send({
                             message: err.message || "Error editing user claim.",
@@ -70,29 +70,29 @@ exports.createUserClaim = (req, res) => {
                         },
                     },
                 })
-                .then((userFK) => {
-                    userClaim.setUser(userFK).then(() => {
-                        if (req.body.permissionClaimFK) {
-                            PermissionClaims.findOne({
-                                where: {
-                                    id: {
-                                        [Op.eq]: req.body.permissionClaimFK,
+                    .then((userFK) => {
+                        userClaim.setUser(userFK).then(() => {
+                            if (req.body.permissionClaimFK) {
+                                PermissionClaims.findOne({
+                                    where: {
+                                        id: {
+                                            [Op.eq]: req.body.permissionClaimFK,
+                                        },
                                     },
-                                },
-                            }).then((permissionClaimFK) => {
-                                userClaim
-                                    .setPermissionClaim(permissionClaimFK)
-                                    .then(() => {
-                                        res.status(200).send({
-                                            status: 101,
-                                            message:
-                                                "User claim successfully entered.",
+                                }).then((permissionClaimFK) => {
+                                    userClaim
+                                        .setPermissionClaim(permissionClaimFK)
+                                        .then(() => {
+                                            res.status(200).send({
+                                                status: 101,
+                                                message:
+                                                    "User claim successfully entered.",
+                                            });
                                         });
-                                    });
-                            });
-                        }
-                    });
-                })
+                                });
+                            }
+                        });
+                    })
                     .catch((err) => {
                         res.status(500).send({ message: err.message });
                     });
@@ -102,7 +102,13 @@ exports.createUserClaim = (req, res) => {
 };
 
 exports.getUserClaim = (req, res) => {
-    UserClaim.findAll({})
+    UserClaim.findAll({
+        include: [
+            {
+                model: PermissionClaims,
+            },
+        ],
+    })
         .then((data) => {
             res.send(data);
         })
