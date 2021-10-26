@@ -84,7 +84,6 @@ exports.createRoleClaim = (req, res) => {
                                     roleClaim
                                         .setPermissionClaim(permissionClaimFK)
                                         .then((result) => {
-                                            console.log("neki id", result);
                                             res.status(200).send({
                                                 roleClaimId:
                                                     result.dataValues.id,

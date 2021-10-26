@@ -82,8 +82,10 @@ exports.createUserClaim = (req, res) => {
                                 }).then((permissionClaimFK) => {
                                     userClaim
                                         .setPermissionClaim(permissionClaimFK)
-                                        .then(() => {
+                                        .then((result) => {
                                             res.status(200).send({
+                                                userClaimId:
+                                                    result.dataValues.id,
                                                 status: 101,
                                                 message:
                                                     "User claim successfully entered.",
@@ -127,6 +129,7 @@ exports.deleteUserClaim = (req, res) => {
     })
         .then(() => {
             res.status(200).send({
+                status: 101,
                 message: "User claim successfully deleted.",
             });
         })
