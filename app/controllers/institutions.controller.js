@@ -33,6 +33,7 @@ exports.createInstitution = (req, res) => {
                 })
                 .then(() => {
                     res.status(200).send({
+                        status: 101,
                         message: "Institution successfully arranged.",
                     });
                 })
@@ -51,6 +52,7 @@ exports.createInstitution = (req, res) => {
         })
             .then(() => {
                 res.status(200).send({
+                    status: 101,
                     message: "Institution successfully entered.",
                 });
             })
@@ -82,6 +84,7 @@ exports.deleteInstitution = (req, res) => {
     })
         .then(() => {
             res.status(200).send({
+                status: 101,
                 message: "Institution successfully deleted.",
             });
         })

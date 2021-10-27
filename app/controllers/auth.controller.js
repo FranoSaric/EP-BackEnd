@@ -51,7 +51,6 @@ exports.signUp = (req, res) => {
           firstName: req.body.firstName,
           lastName: req.body.lastName,
           email: req.body.email,
-          password: bcrypt.hashSync(req.body.password, 8),
           creationDate: new Date(),
         })
         .then((users) => {
