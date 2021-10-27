@@ -10,7 +10,8 @@ exports.createClassroom = (req, res) => {
         !req.body.numberOfClassroom ||
         !req.body.numberOfSeats ||
         !req.body.floor ||
-        !req.body.free
+        req.body.free !== true || 
+        req.body.free !== false
     ) {
         res.status(400).send({
             message: "All fields are required!",
@@ -39,9 +40,12 @@ exports.createClassroom = (req, res) => {
                         },
                     },
                 })
-                    .then(() => {
-                        res.status(200).send({
-                            message: "Classroom successfully decorated.",
+                    .then((institutionFK) => {
+                        classrooms.setInstitution(institutionFK).then(() => {
+                            res.status(200).send({
+                                status: 101,
+                                message: "Classroom successfully decorated.",
+                            });
                         });
                     })
                     .catch((err) => {
@@ -69,6 +73,7 @@ exports.createClassroom = (req, res) => {
                     .then((institutionFK) => {
                         classrooms.setInstitution(institutionFK).then(() => {
                             res.status(200).send({
+                                status: 101,
                                 message: "Classroom successfully entered.",
                             });
                         });
@@ -82,7 +87,13 @@ exports.createClassroom = (req, res) => {
 };
 
 exports.getClassrooms = (req, res) => {
-    Classrooms.findAll({})
+    Classrooms.findAll({
+        include: [
+            {
+                model: Institutions,
+            },
+        ],
+    })
         .then((data) => {
             res.send(data);
         })
@@ -101,6 +112,7 @@ exports.deleteClassroom = (req, res) => {
     })
         .then(() => {
             res.status(200).send({
+                status: 101,
                 message: "Classroom successfully deleted.",
             });
         })

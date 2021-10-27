@@ -177,10 +177,6 @@ exports.signIn = (req, res) => {
           },
         ],
       }).then((userClaim) => {
-        console.log(
-          "permission claim",
-          userClaim[0].dataValues.permissionClaim
-        );
         for (let k = 0; k < userClaim.length; k++) {
           let type = userClaim[k].dataValues.permissionClaim.dataValues.type;
           let claimsArray = [];
