@@ -9,9 +9,7 @@ exports.createClassroom = (req, res) => {
     if (
         !req.body.numberOfClassroom ||
         !req.body.numberOfSeats ||
-        !req.body.floor ||
-        req.body.free !== true || 
-        req.body.free !== false
+        !req.body.floor
     ) {
         res.status(400).send({
             message: "All fields are required!",

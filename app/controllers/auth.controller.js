@@ -177,14 +177,18 @@ exports.signIn = (req, res) => {
           },
         ],
       }).then((userClaim) => {
+        console.log("CLAIMOVI", userClaim[0].dataValues.permissionClaim)
         for (let k = 0; k < userClaim.length; k++) {
           let type = userClaim[k].dataValues.permissionClaim.dataValues.type;
           let claimsArray = [];
-          for (let l = 0; l < type.length; l++) {
+          console.log("type lenght", userClaim[k].dataValues.permissionClaim.dataValues)
+          for (let l = 0; l < userClaim.length; l++) {
             if (userClaim[l] !== undefined) {
+              console.log("is type equals", type === userClaim[l].dataValues.permissionClaim.dataValues.type)
               if (
                 type === userClaim[l].dataValues.permissionClaim.dataValues.type
               ) {
+                console.log("value", userClaim[l].dataValues.permissionClaim.dataValues.value)
                 let claim =
                   userClaim[l].dataValues.permissionClaim.dataValues.value;
                 claimsArray.push(claim);
@@ -196,47 +200,53 @@ exports.signIn = (req, res) => {
         }
       });
 
-      RoleClaim.findAll({
-        include: [
-          {
-            model: Roles,
-          },
-          {
-            model: PermissionClaims,
-          },
-        ],
-      }).then((roleClaim) => {
-        for (let i = 0; i < roleClaim.length; i++) {
-          let type = roleClaim[i].dataValues.permissionClaim.dataValues.type;
+      // RoleClaim.findAll({
+      //   include: [
+      //     {
+      //       model: Roles,
+      //     },
+      //     {
+      //       model: PermissionClaims,
+      //     },
+      //   ],
+      // }).then((roleClaim) => {
+      //   for (let i = 0; i < roleClaim.length; i++) {
+      //     let type = roleClaim[i].dataValues.permissionClaim.dataValues.type;
 
-          if (
-            roleClaim[i].dataValues.permissionClaim.dataValues.type in claims
-          ) {
-            if (roleClaim[i] !== undefined) {
-              if (
-                type === roleClaim[i].dataValues.permissionClaim.dataValues.type
-              ) {
-                let claim =
-                  roleClaim[i].dataValues.permissionClaim.dataValues.value;
-                claims[type].push(claim);
-              }
-            }
-          } else {
-            let claimsArray = [];
-            if (roleClaim[i] !== undefined) {
-              if (
-                type === roleClaim[i].dataValues.permissionClaim.dataValues.type
-              ) {
-                let claim =
-                  roleClaim[i].dataValues.permissionClaim.dataValues.value;
-                claimsArray.push(claim);
-              }
-            }
-            claims[type] = claimsArray;
-          }
-        }
-        console.log("claimovi", claims);
-      });
+      //     let valuesOfClaim=claims[roleClaim[i].dataValues.permissionClaim.dataValues.type]
+      //     let valueOfType=roleClaim[i].dataValues.permissionClaim.dataValues.value.toString()
+
+      //     if (
+      //       roleClaim[i].dataValues.permissionClaim.dataValues.type in claims
+      //       && !valuesOfClaim.includes(valueOfType)
+      //     ) {
+      //       if (roleClaim[i] !== undefined) {
+      //         if (
+      //           type === roleClaim[i].dataValues.permissionClaim.dataValues.type
+      //         ) {
+      //           let claim =
+      //             roleClaim[i].dataValues.permissionClaim.dataValues.value;
+      //           claims[type].push(claim);
+      //         }
+      //       }
+      //     } else {
+      //       console.log("USOOOO")
+      //       let claimsArray = [];
+      //       if (roleClaim[i] !== undefined) {
+      //         if (
+      //           type === roleClaim[i].dataValues.permissionClaim.dataValues.type
+      //         ) {
+      //           let claim =
+      //             roleClaim[i].dataValues.permissionClaim.dataValues.value;
+      //           claimsArray.push(claim);
+      //         }
+      //       }
+      //       console.log("claimsArray", claimsArray);
+      //       claims[type] = claimsArray;
+      //     }
+      //   }
+      //   console.log("claimovi", claims);
+      // });
 
       users.getRole().then((roles) => {
         res.status(200).send({

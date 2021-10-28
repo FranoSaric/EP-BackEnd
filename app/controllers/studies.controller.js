@@ -2,6 +2,7 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const Studies = db.studies;
 const Institutions = db.institutions;
+const Users = db.users;
 
 const Op = db.Sequelize.Op;
 
@@ -41,6 +42,7 @@ exports.createStudy = (req, res) => {
                     .then((institutionFK) => {
                         studies.setInstitution(institutionFK).then(() => {
                             res.status(200).send({
+                                status: 101,
                                 message: "Study successfully edited.",
                             });
                         });
@@ -71,6 +73,7 @@ exports.createStudy = (req, res) => {
                     .then((institutionFK) => {
                         studies.setInstitution(institutionFK).then(() => {
                             res.status(200).send({
+                                status: 101,
                                 message: "Study successfully entered.",
                             });
                         });
@@ -93,11 +96,9 @@ exports.createStudy = (req, res) => {
 
 exports.getStudies = (req, res) => {
     Studies.findAll({
-        where: {},
         include: [
             {
-                model: Users,
-                where: { indexNumber: req.params.id },
+                model: Institutions,
             },
         ],
     })
@@ -119,6 +120,7 @@ exports.deleteStudy = (req, res) => {
     })
         .then(() => {
             res.status(200).send({
+                status: 101,
                 message: "Study successfully deleted.",
             });
         })
