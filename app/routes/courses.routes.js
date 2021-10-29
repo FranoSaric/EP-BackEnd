@@ -12,7 +12,7 @@ module.exports = function (app) {
     });
 
     app.get(
-        "/getCourses/:id",
+        "/getCourses/:id?",
         [authJwt.verifyToken, authJwt.isEmployee],
         controller.getCourses
     );

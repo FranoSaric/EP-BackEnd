@@ -104,21 +104,55 @@ exports.createUserClaim = (req, res) => {
 };
 
 exports.getUserClaim = (req, res) => {
-    UserClaim.findAll({
-        include: [
-            {
-                model: PermissionClaims,
+    if (req.body.id) {
+        Users.findAll({
+            where: {
+                id: req.body.id,
             },
-        ],
-    })
-        .then((data) => {
-            res.send(data);
         })
-        .catch((err) => {
-            res.status(500).send({
-                message: err.message || "Retrieval error.",
+            .then((data) => {
+                console.log(data[0].dataValues.id)
+                UserClaim.findAll({
+                    where: {
+                        userFK: data[0].dataValues.id,
+                    },
+                    include:[
+                        {
+                            model:PermissionClaims
+                        }
+                    ]
+                })
+                    .then((data) => {
+                        res.send(data);
+                    })
+                    .catch((err) => {
+                        res.status(500).send({
+                            message: err.message || "Retrieval error.",
+                        });
+                    });
+            })
+            .catch((err) => {
+                res.status(500).send({
+                    message: err.message || "Retrieval error.",
+                });
             });
-        });
+    } else {
+        UserClaim.findAll({
+            include: [
+                {
+                    model: PermissionClaims,
+                },
+            ],
+        })
+            .then((data) => {
+                res.send(data);
+            })
+            .catch((err) => {
+                res.status(500).send({
+                    message: err.message || "Retrieval error.",
+                });
+            });
+    }
 };
 
 exports.deleteUserClaim = (req, res) => {

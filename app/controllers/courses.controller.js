@@ -54,6 +54,7 @@ exports.createCourse = (req, res) => {
                                 }).then((studyFK) => {
                                     courses.setStudy(studyFK).then(() => {
                                         res.status(200).send({
+                                            status: 101,
                                             message:
                                                 "The course was successfully edited.",
                                         });
@@ -99,6 +100,7 @@ exports.createCourse = (req, res) => {
                                 }).then((studyFK) => {
                                     courses.setStudy(studyFK).then(() => {
                                         res.status(200).send({
+                                            status: 101,
                                             message:
                                                 "Course successfully entered.",
                                         });
@@ -121,7 +123,9 @@ exports.getCourses = (req, res) => {
         include: [
             {
                 model: Users,
-                where: { indexNumber: req.body.id },
+            },
+            {
+                model: Studies,
             },
         ],
     })
@@ -143,6 +147,7 @@ exports.deleteCourse = (req, res) => {
     })
         .then(() => {
             res.status(200).send({
+                status: 101,
                 message: "Course successfully deleted.",
             });
         })
