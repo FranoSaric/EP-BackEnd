@@ -5,6 +5,7 @@ const PermissionClaims = db.permissionClaims;
 const Op = db.Sequelize.Op;
 
 exports.createPermissionClaim = (req, res) => {
+    console.log(req.body)
     if (!req.body.type || !req.body.value) {
         res.status(400).send({
             message: "All fields are required!",

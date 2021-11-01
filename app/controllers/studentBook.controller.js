@@ -7,6 +7,7 @@ const Users = db.users;
 const Op = db.Sequelize.Op;
 
 exports.createStudentBook = (req, res) => {
+    console.log("podatci", req.body)
     if (
         !req.body.pickUpDate ||
         !req.body.returnDate ||
@@ -27,12 +28,14 @@ exports.createStudentBook = (req, res) => {
             },
         })
             .then((studentBook) => {
+                console.log("tu smo")
                 studentBook.update({
                     pickUpDate: req.body.pickUpDate,
                     returnDate: req.body.returnDate,
                 });
                 if (req.body.userFK) {
-                    Korisnik.findOne({
+                    console.log("i tu")
+                    Users.findOne({
                         where: {
                             id: {
                                 [Op.eq]: req.body.userFK,
@@ -40,6 +43,7 @@ exports.createStudentBook = (req, res) => {
                         },
                     })
                         .then((userFK) => {
+                            console.log("i tuuu")
                             studentBook.setUser(userFK).then(() => {
                                 if (req.body.bookFK) {
                                     Books.findOne({
@@ -49,10 +53,12 @@ exports.createStudentBook = (req, res) => {
                                             },
                                         },
                                     }).then((bookFK) => {
+                                        console.log("i kraj")
                                         studentBook
                                             .setBook(bookFK)
                                             .then(() => {
                                                 res.status(200).send({
+                                                    status:101,
                                                     message:
                                                         "Student-book successfully edited.",
                                                 });
@@ -100,6 +106,7 @@ exports.createStudentBook = (req, res) => {
                                 }).then((bookFK) => {
                                     studentBook.setBook(bookFK).then(() => {
                                         res.status(200).send({
+                                            status:101,
                                             message:
                                                 "Student-book successfully entered.",
                                         });
@@ -124,7 +131,9 @@ exports.getStudentBooks = (req, res) => {
         include: [
             {
                 model: Users,
-                where: { indexNumber: req.params.id },
+            },
+            {
+                model: Books,
             },
         ],
     })
@@ -146,6 +155,7 @@ exports.deleteStudentBook = (req, res) => {
     })
         .then(() => {
             res.status(200).send({
+                status:101,
                 message: "Student book claim successfully deleted.",
             });
         })
