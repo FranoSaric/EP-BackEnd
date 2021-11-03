@@ -16,14 +16,14 @@ var bcrypt = require("bcryptjs");
 
 exports.signUp = (req, res) => {
   if (
-    !req.body.userName &&
-    !req.body.indexNumber &&
-    !req.body.firtName &&
-    !req.body.lastName &&
-    !req.body.email &&
-    !req.body.password &&
-    !req.body.creationDate &&
-    !req.body.roleFK &&
+    !req.body.userName ||
+    !req.body.indexNumber ||
+    !req.body.firstName ||
+    !req.body.lastName ||
+    !req.body.email ||
+    !req.body.password ||
+    !req.body.creationDate ||
+    !req.body.roleFK ||
     !req.body.institutionFK
   ) {
     res.status(400).send({

@@ -6,7 +6,7 @@ const Institutions = db.institutions;
 const Op = db.Sequelize.Op;
 
 exports.createLibrary = (req, res) => {
-    if (!req.body.institutionId) {
+    if (!req.body.name || !req.body.institutionId) {
         res.status(400).send({
             message: "All fields are required!",
         });
@@ -21,7 +21,7 @@ exports.createLibrary = (req, res) => {
             },
         })
             .then((library) => {
-                library.update({});
+                library.update({name: req.body.name});
                 if (req.body.institutionId) {
                     Institutions.findOne({
                         where: {
@@ -49,7 +49,7 @@ exports.createLibrary = (req, res) => {
                 res.status(500).send({ message: "Institution not sent." });
             });
     } else {
-        Library.create({}).then((library) => {
+        Library.create({name: req.body.name,}).then((library) => {
             if (req.body.institutionId) {
                 Institutions.findOne({
                     where: {

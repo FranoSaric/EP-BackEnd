@@ -32,7 +32,7 @@ exports.createStudentBook = (req, res) => {
                     returnDate: req.body.returnDate,
                 });
                 if (req.body.userFK) {
-                    Korisnik.findOne({
+                    Users.findOne({
                         where: {
                             id: {
                                 [Op.eq]: req.body.userFK,
@@ -53,6 +53,7 @@ exports.createStudentBook = (req, res) => {
                                             .setBook(bookFK)
                                             .then(() => {
                                                 res.status(200).send({
+                                                    status:101,
                                                     message:
                                                         "Student-book successfully edited.",
                                                 });
@@ -100,6 +101,7 @@ exports.createStudentBook = (req, res) => {
                                 }).then((bookFK) => {
                                     studentBook.setBook(bookFK).then(() => {
                                         res.status(200).send({
+                                            status:101,
                                             message:
                                                 "Student-book successfully entered.",
                                         });
@@ -124,7 +126,9 @@ exports.getStudentBooks = (req, res) => {
         include: [
             {
                 model: Users,
-                where: { indexNumber: req.params.id },
+            },
+            {
+                model: Books,
             },
         ],
     })
@@ -146,6 +150,7 @@ exports.deleteStudentBook = (req, res) => {
     })
         .then(() => {
             res.status(200).send({
+                status:101,
                 message: "Student book claim successfully deleted.",
             });
         })
