@@ -142,7 +142,7 @@ exports.getCourses = (req, res) => {
 exports.deleteCourse = (req, res) => {
     Courses.destroy({
         where: {
-            id: req.params.id,
+            id: req.body.id,
         },
     })
         .then(() => {
