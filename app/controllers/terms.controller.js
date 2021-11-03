@@ -52,14 +52,13 @@ exports.createTerm = (req, res) => {
                                         },
                                     },
                                 }).then((classroomFK) => {
-                                    terms
-                                        .setClassroom(classroomFK)
-                                        .then(() => {
-                                            res.status(200).send({
-                                                message:
-                                                    "Date successfully edited.",
-                                            });
+                                    terms.setClassroom(classroomFK).then(() => {
+                                        res.status(200).send({
+                                            status: 101,
+                                            message:
+                                                "Date successfully edited.",
                                         });
+                                    });
                                 });
                             } else {
                                 res.status(500).send({
@@ -100,14 +99,13 @@ exports.createTerm = (req, res) => {
                                         },
                                     },
                                 }).then((classroomFK) => {
-                                    terms
-                                        .setClassroom(classroomFK)
-                                        .then(() => {
-                                            res.status(200).send({
-                                                message:
-                                                    "Term successfully entered.",
-                                            });
+                                    terms.setClassroom(classroomFK).then(() => {
+                                        res.status(200).send({
+                                            status: 101,
+                                            message:
+                                                "Term successfully entered.",
                                         });
+                                    });
                                 });
                             }
                         });
@@ -125,6 +123,9 @@ exports.getTerms = (req, res) => {
         include: [
             {
                 model: Courses,
+            },
+            {
+                model: Classrooms,
             },
         ] /* ,
       where: {
@@ -149,6 +150,7 @@ exports.deleteTerm = (req, res) => {
     })
         .then(() => {
             res.status(200).send({
+                status: 101,
                 message: "Term successfully deleted.",
             });
         })

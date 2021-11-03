@@ -41,10 +41,11 @@ exports.createBookLibrary = (req, res) => {
                                             },
                                         },
                                     }).then((bookFK) => {
-                                        booksLibraries
+                                        booksLibrary
                                             .setBook(bookFK)
                                             .then(() => {
                                                 res.status(200).send({
+                                                    status: 101,
                                                     message:
                                                         "Book-Library successfully edited.",
                                                 });
@@ -89,6 +90,7 @@ exports.createBookLibrary = (req, res) => {
                                 }).then((bookFK) => {
                                     booksLibrary.setBook(bookFK).then(() => {
                                         res.status(200).send({
+                                            status: 101,
                                             message:
                                                 "Book-Library successfully entered.",
                                         });
@@ -106,7 +108,16 @@ exports.createBookLibrary = (req, res) => {
 };
 
 exports.getBooksLibrary = (req, res) => {
-    BooksLibrary.findAll({})
+    BooksLibrary.findAll({
+        include: [
+            {
+                model: Library,
+            },
+            {
+                model: Books,
+            },
+        ],
+    })
         .then((data) => {
             res.send(data);
         })
@@ -125,6 +136,7 @@ exports.deleteBookLibrary = (req, res) => {
     })
         .then(() => {
             res.status(200).send({
+                status: 101,
                 message: "Book library successfully deleted.",
             });
         })

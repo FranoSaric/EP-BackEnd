@@ -14,15 +14,15 @@ exports.createRecord = (req, res) => {
         return;
     }
     if (req.body.id) {
-        Classrooms.findOne({
+        Records.findOne({
             where: {
                 id: {
                     [Op.eq]: req.body.id,
                 },
             },
         })
-            .then((classrooms) => {
-                classrooms.update({ checkInTime: req.body.checkInTime });
+            .then((records) => {
+                records.update({ checkInTime: req.body.checkInTime });
                 if (req.body.userFK) {
                     Users.findOne({
                         where: {
@@ -31,7 +31,7 @@ exports.createRecord = (req, res) => {
                             },
                         },
                     }).then((userFK) => {
-                        classrooms.setUser(userFK).then(() => {
+                        records.setUser(userFK).then(() => {
                             if (req.body.classroomFK) {
                                 Classrooms.findOne({
                                     where: {
@@ -40,10 +40,11 @@ exports.createRecord = (req, res) => {
                                         },
                                     },
                                 }).then((classroomFK) => {
-                                    classrooms
+                                    records
                                         .setClassroom(classroomFK)
                                         .then(() => {
                                             res.status(200).send({
+                                                status: 101,
                                                 message:
                                                     "Record successfully edited.",
                                             });
@@ -88,6 +89,7 @@ exports.createRecord = (req, res) => {
                                             .setClassroom(classroomFK)
                                             .then(() => {
                                                 res.status(200).send({
+                                                    status: 101,
                                                     message:
                                                         "Record successfully entered.",
                                                 });
@@ -109,7 +111,16 @@ exports.createRecord = (req, res) => {
     }
 };
 exports.getRecords = (req, res) => {
-    Records.findAll({})
+    Records.findAll({
+        include: [
+            {
+                model: Classrooms,
+            },
+            {
+                model: Users,
+            },
+        ],
+    })
         .then((data) => {
             res.send(data);
         })
@@ -128,6 +139,7 @@ exports.deleteRecord = (req, res) => {
     })
         .then(() => {
             res.status(200).send({
+                status: 101,
                 message: "Record successfully deleted.",
             });
         })

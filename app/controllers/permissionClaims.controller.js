@@ -49,6 +49,7 @@ exports.createPermissionClaim = (req, res) => {
                 });
             })
             .catch((err) => {
+                console.log("TUTEN SAM")
                 res.status(500).send({
                     message: err.message || "Error creating permission claim.",
                 });

@@ -12,10 +12,8 @@ module.exports = function (app) {
     });
 
     app.get(
-        "/getTerms/:id",
-        [
-            /* authJwt.verifyToken, authJwt.isDjelatnik */
-        ],
+        "/getTerms",
+        [authJwt.verifyToken, authJwt.isEmployee],
         controller.getTerms
     );
     app.post(
@@ -25,8 +23,8 @@ module.exports = function (app) {
     );
 
     app.delete(
-      "/deleteTerm",
-      [authJwt.verifyToken, authJwt.isEmployee],
+        "/deleteTerm",
+        [authJwt.verifyToken, authJwt.isEmployee],
         controller.deleteTerm
-    )
+    );
 };
