@@ -25,6 +25,7 @@ exports.createRole = (req, res) => {
                 })
                 .then(() => {
                     res.status(200).send({
+                        status: 101,
                         message: "Role successfully edited.",
                     });
                 })
@@ -40,6 +41,7 @@ exports.createRole = (req, res) => {
         })
             .then(() => {
                 res.status(200).send({
+                    status: 101,
                     message: "Role successfully entered.",
                 });
             })
@@ -71,6 +73,7 @@ exports.deleteRole = (req, res) => {
     })
         .then(() => {
             res.status(200).send({
+                status: 101,
                 message: "Role successfully deleted.",
             });
         })
