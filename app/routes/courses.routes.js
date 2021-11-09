@@ -13,18 +13,18 @@ module.exports = function (app) {
 
     app.get(
         "/getCourses/:id?",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.getCourses
     );
     app.post(
         "/createCourse",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.createCourse
     );
 
     app.delete(
       "/deleteCourse",
-      [authJwt.verifyToken, authJwt.isEmployee],
+      [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.deleteCourse
     )
 };

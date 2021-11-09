@@ -13,18 +13,18 @@ module.exports = function (app) {
 
     app.get(
         "/getInstitutions",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.getInstitutions
     );
     app.post(
         "/createInstitution",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.createInstitution
     );
 
     app.delete(
         "/deleteInstitution",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
           controller.deleteInstitution
       )
 };

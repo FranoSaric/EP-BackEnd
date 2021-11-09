@@ -105,7 +105,6 @@ exports.createRoleClaim = (req, res) => {
 };
 
 exports.getRoleClaim = (req, res) => {
-    console.log("id sto dolazi", req.body);
     if (req.body.userId) {
         Users.findAll({
             where: {
@@ -124,7 +123,6 @@ exports.getRoleClaim = (req, res) => {
             ],
         })
             .then((data) => {
-                console.log(data[0].dataValues.roleFK)
                 RoleClaim.findAll({
                     where: {
                         roleFK: data[0].dataValues.roleFK,

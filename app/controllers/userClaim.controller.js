@@ -111,7 +111,6 @@ exports.getUserClaim = (req, res) => {
             },
         })
             .then((data) => {
-                console.log(data[0].dataValues.id)
                 UserClaim.findAll({
                     where: {
                         userFK: data[0].dataValues.id,

@@ -13,18 +13,18 @@ module.exports = function (app) {
 
     app.get(
         "/getCategories",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.getCategories
     );
     app.post(
         "/createCategory",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.createCategory
     );
 
     app.delete(
       "/deleteCategory",
-      [authJwt.verifyToken, authJwt.isEmployee],
+      [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.deleteCategory
     )
 };

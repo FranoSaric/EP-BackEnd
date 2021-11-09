@@ -13,18 +13,18 @@ module.exports = function (app) {
 
     app.get(
         "/getPermissionClaims",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.getPermissionClaims
     );
     app.post(
         "/createPermissionClaim",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.createPermissionClaim
     );
 
     app.delete(
         "/deletePermissionClaim",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
           controller.deletePermissionClaim
       )
 };

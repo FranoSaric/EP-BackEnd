@@ -7,7 +7,7 @@ const app = express();
 process.env.TZ = "Europe/Amsterdam";
 
 var corsOptions = {
-    origin: "http://192.168.2.20:8080/",
+    origin: "http://localhost:3000",
 };
 
 app.use(cors(corsOptions));

@@ -13,18 +13,18 @@ module.exports = function (app) {
 
     app.post(
         "/getUserClaim",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.getUserClaim
     );
     app.post(
         "/createUserClaim",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.createUserClaim
     );
 
     app.delete(
         "/deleteUserClaim",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
           controller.deleteUserClaim
       )
 };

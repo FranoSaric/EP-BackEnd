@@ -13,18 +13,18 @@ module.exports = function (app) {
 
     app.get(
         "/getLibraries",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.getLibraries
     );
     app.post(
         "/createLibrary",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.createLibrary
     );
 
     app.delete(
       "/deleteLibrary",
-      [authJwt.verifyToken, authJwt.isEmployee],
+      [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.deleteLibrary
     )
 };

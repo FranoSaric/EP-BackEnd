@@ -15,13 +15,13 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
 exports.signUp = (req, res) => {
+    console.log(req.body);
     if (
         !req.body.userName ||
         !req.body.indexNumber ||
         !req.body.firstName ||
         !req.body.lastName ||
         !req.body.email ||
-        !req.body.password ||
         !req.body.creationDate ||
         !req.body.roleFK ||
         !req.body.institutionFK
@@ -31,19 +31,19 @@ exports.signUp = (req, res) => {
         });
         return;
     }
-    Users.findOne({
-        where: {
-            indexNumber: {
-                [Op.eq]: req.body.indexNumber,
+    if (req.body.id) {
+        Users.findOne({
+            where: {
+                indexNumber: {
+                    [Op.eq]: req.body.indexNumber,
+                },
             },
-        },
-    }).then((users) => {
-        // Check if record exists in db
-        if (users) {
+        }).then((users) => {
+            // Check if record exists in db
+
             var token = jwt.sign({ id: users.id }, config.secret, {
                 expiresIn: 86400, // expires in 24 hours
             });
-            console.log(token);
             users
                 .update({
                     indexNumber: req.body.indexNumber,
@@ -51,59 +51,9 @@ exports.signUp = (req, res) => {
                     firstName: req.body.firstName,
                     lastName: req.body.lastName,
                     email: req.body.email,
-                    creationDate: new Date(),
+                    creationDate: req.body.creationDate,
                 })
                 .then((users) => {
-                    if (req.body.roleFK) {
-                        Roles.findOne({
-                            where: {
-                                id: {
-                                    [Op.eq]: req.body.roleFK,
-                                },
-                            },
-                        }).then((id) => {
-                            users.setRoles(id);
-                        });
-                    } else {
-                        // user role = 1
-                        users.setRoles(1);
-                    }
-                })
-                .then(() => {
-                    res.send({
-                        message: "Update success!",
-                        accessToken: token,
-                    });
-                });
-        } else {
-            Users.create({
-                indexNumber: req.body.indexNumber,
-                userName: req.body.userName,
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                email: req.body.email,
-                password: bcrypt.hashSync(req.body.password, 8),
-                creationDate: req.body.creationDate,
-            })
-                .then((users) => {
-                    var token = jwt.sign(
-                        { id: users.indexNumber },
-                        config.secret,
-                        {
-                            expiresIn: 86400, // expires in 24 hours
-                        }
-                    );
-                    if (req.body.institutionFK) {
-                        Institutions.findOne({
-                            where: {
-                                id: {
-                                    [Op.eq]: req.body.institutionFK,
-                                },
-                            },
-                        }).then((id) => {
-                            users.setInstitution(id);
-                        });
-                    }
                     if (req.body.roleFK) {
                         Roles.findOne({
                             where: {
@@ -114,27 +64,66 @@ exports.signUp = (req, res) => {
                         }).then((id) => {
                             users.setRole(id);
                         });
-                    } else {
-                        // user role = 1
-                        users.setRole(1).then(() => {
-                            res.send({
-                                message: "Profesor successfully registered!",
-                                accessToken: token,
-                            });
-                        });
                     }
                 })
                 .then(() => {
                     res.send({
-                        message: "User successfully created!",
+                        status: 101,
                         accessToken: token,
                     });
-                })
-                .catch((err) => {
-                    res.status(500).send({ message: err.message });
                 });
-        }
-    });
+        });
+    } else {
+        console.log("date", req.body.creationDate);
+        Users.create({
+            indexNumber: req.body.indexNumber,
+            userName: req.body.userName,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            password: bcrypt.hashSync(req.body.password, 8),
+            creationDate: req.body.creationDate,
+        }).then((users) => {
+            var token = jwt.sign({ id: users.indexNumber }, config.secret, {
+                expiresIn: 86400, // expires in 24 hours
+            });
+            if (req.body.institutionFK) {
+                Institutions.findOne({
+                    where: {
+                        id: {
+                            [Op.eq]: req.body.institutionFK,
+                        },
+                    },
+                }).then((id) => {
+                    users.setInstitution(id).then(() => {
+                        if (req.body.roleFK) {
+                            Roles.findOne({
+                                where: {
+                                    id: {
+                                        [Op.eq]: req.body.roleFK,
+                                    },
+                                },
+                            }).then((id) => {
+                                users
+                                    .setRole(id)
+                                    .then(() => {
+                                        res.send({
+                                            status: 101,
+                                            accessToken: token,
+                                        });
+                                    })
+                                    .catch((err) => {
+                                        res.status(500).send({
+                                            message: err.message,
+                                        });
+                                    });
+                            });
+                        }
+                    });
+                });
+            }
+        });
+    }
 };
 //TODO("Napraviti signin preko sso za sum API")
 exports.signIn = (req, res) => {
@@ -223,9 +212,6 @@ exports.signIn = (req, res) => {
                 for (let i = 0; i < roleClaim.length; i++) {
                     let type =
                         roleClaim[i].dataValues.permissionClaim.dataValues.type;
-                    console.log(
-                        roleClaim[i].dataValues.permissionClaim.dataValues.value
-                    );
                     let valuesOfClaim =
                         claims[
                             roleClaim[i].dataValues.permissionClaim.dataValues
@@ -270,7 +256,6 @@ exports.signIn = (req, res) => {
                         claims[type] = claimsArray;
                     }
                 }
-                console.log("claimovi", claims);
             });
 
             users.getRole().then((roles) => {

@@ -13,19 +13,19 @@ module.exports = function (app) {
 
     app.get(
         "/getRecords",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.getRecords
     );
 
     app.post(
         "/createRecord",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.createRecord
     );
 
     app.delete(
       "/deleteRecord",
-      [authJwt.verifyToken, authJwt.isEmployee],
+      [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.deleteRecord
     )
 };

@@ -13,18 +13,18 @@ module.exports = function (app) {
 
     app.get(
         "/getTerms",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.getTerms
     );
     app.post(
         "/createTerm",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.createTerm
     );
 
     app.delete(
         "/deleteTerm",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.deleteTerm
     );
 };

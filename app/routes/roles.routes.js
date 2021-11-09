@@ -13,18 +13,18 @@ module.exports = function (app) {
 
     app.get(
         "/getRoles",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.getRoles
     );
     app.post(
         "/createRole",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.createRole
     );
 
     app.delete(
         "/deleteRole",
-        [authJwt.verifyToken, authJwt.isEmployee],
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
           controller.deleteRole
       )
 };
