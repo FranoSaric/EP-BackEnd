@@ -11,7 +11,7 @@ module.exports = function (app) {
         next();
     });
 
-    app.get(
+    app.post(
         "/getLibraries",
         [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.getLibraries

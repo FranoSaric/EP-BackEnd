@@ -25,7 +25,7 @@ module.exports = function (app) {
         controller.findUser
     );
 
-    app.get(
+    app.post(
         "/getUsers",
         [authJwt.verifyToken,/*authJwt.isEmployee*/],
         controller.getUsers

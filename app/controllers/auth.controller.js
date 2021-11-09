@@ -268,6 +268,7 @@ exports.signIn = (req, res) => {
                     email: users.email,
                     roles: roles.name,
                     accessToken: token,
+                    institutionFK: users.institutionFK,
                     claims: claims,
                 });
             });
@@ -326,24 +327,40 @@ exports.findUser = (req, res) => {
 };
 
 exports.getUsers = (req, res) => {
-    Users.findAll({
-        include: [
-            {
-                model: Institutions,
-            },
-            {
-                model: Roles,
-            },
-        ],
-    })
-        .then((data) => {
-            res.send(data);
+    if (!req.body.institutionId) {
+        Users.findAll({
+            include: [
+                {
+                    model: Institutions,
+                },
+                {
+                    model: Roles,
+                },
+            ],
         })
-        .catch((err) => {
-            res.status(500).send({
-                message: err.message || "Retrieval error.",
+            .then((data) => {
+                res.send(data);
+            })
+            .catch((err) => {
+                res.status(500).send({
+                    message: err.message || "Retrieval error.",
+                });
             });
-        });
+    }else{
+        Users.findAll({
+            where: {
+                institutionFK: req.body.institutionId
+            }
+        })
+            .then((data) => {
+                res.send(data);
+            })
+            .catch((err) => {
+                res.status(500).send({
+                    message: err.message || "Retrieval error.",
+                });
+            });
+    }
 };
 
 exports.deleteUser = (req, res) => {

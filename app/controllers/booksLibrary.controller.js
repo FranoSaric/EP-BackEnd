@@ -3,6 +3,7 @@ const config = require("../config/auth.config");
 const BooksLibrary = db.booksLibrary;
 const Books = db.books;
 const Library = db.library;
+const Categories = db.categories;
 
 const Op = db.Sequelize.Op;
 
@@ -112,9 +113,17 @@ exports.getBooksLibrary = (req, res) => {
         include: [
             {
                 model: Library,
+                where: {
+                    institutionId: req.body.institutionId,
+                },
             },
             {
                 model: Books,
+                include: [
+                    {
+                        model: Categories,
+                    },
+                ],
             },
         ],
     })
