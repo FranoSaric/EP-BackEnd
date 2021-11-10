@@ -95,21 +95,42 @@ exports.createStudy = (req, res) => {
 //Ispis svih kolegija, potrebno preurediti da ispisuje popis svih kolegija za pojedini studiji
 
 exports.getStudies = (req, res) => {
-    Studies.findAll({
-        include: [
-            {
-                model: Institutions,
-            },
-        ],
-    })
-        .then((data) => {
-            res.send(data);
+    if (req.body.institutionId) {
+        Studies.findAll({
+            include: [
+                {
+                    model: Institutions,
+                    where: {
+                        id: req.body.institutionId,
+                    },
+                },
+            ],
         })
-        .catch((err) => {
-            res.status(500).send({
-                message: err.message || "Retrieval error.",
+            .then((data) => {
+                res.send(data);
+            })
+            .catch((err) => {
+                res.status(500).send({
+                    message: err.message || "Retrieval error.",
+                });
             });
-        });
+    } else {
+        Studies.findAll({
+            include: [
+                {
+                    model: Institutions,
+                },
+            ],
+        })
+            .then((data) => {
+                res.send(data);
+            })
+            .catch((err) => {
+                res.status(500).send({
+                    message: err.message || "Retrieval error.",
+                });
+            });
+    }
 };
 
 exports.deleteStudy = (req, res) => {

@@ -65,15 +65,27 @@ exports.createInstitution = (req, res) => {
 };
 
 exports.getInstitutions = (req, res) => {
-    Institutions.findAll({})
-        .then((data) => {
-            res.send(data);
-        })
-        .catch((err) => {
-            res.status(500).send({
-                message: err.message || "Retrieval error.",
+    if (req.body.institutionId) {
+        Institutions.findAll({ where: { id: req.body.institutionId } })
+            .then((data) => {
+                res.send(data);
+            })
+            .catch((err) => {
+                res.status(500).send({
+                    message: err.message || "Retrieval error.",
+                });
             });
-        });
+    } else {
+        Institutions.findAll({})
+            .then((data) => {
+                res.send(data);
+            })
+            .catch((err) => {
+                res.status(500).send({
+                    message: err.message || "Retrieval error.",
+                });
+            });
+    }
 };
 
 exports.deleteInstitution = (req, res) => {

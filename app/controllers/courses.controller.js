@@ -118,25 +118,46 @@ exports.createCourse = (req, res) => {
 };
 //Ispis svih kolegija, potrebno preurediti da ispisuje popis svih kolegija za pojedini studiji
 exports.getCourses = (req, res) => {
-    Courses.findAll({
-        where: {},
-        include: [
-            {
-                model: Users,
-            },
-            {
-                model: Studies,
-            },
-        ],
-    })
-        .then((data) => {
-            res.send(data);
+    if (req.body.userId) {
+        Courses.findAll({
+            where: { userFK: req.body.userId },
+            include: [
+                {
+                    model: Users,
+                },
+                {
+                    model: Studies,
+                },
+            ],
         })
-        .catch((err) => {
-            res.status(500).send({
-                message: err.message || "Greška prilikom dohvata.",
+            .then((data) => {
+                res.send(data);
+            })
+            .catch((err) => {
+                res.status(500).send({
+                    message: err.message || "Greška prilikom dohvata.",
+                });
             });
-        });
+    }else{
+        Courses.findAll({
+            include: [
+                {
+                    model: Users,
+                },
+                {
+                    model: Studies,
+                },
+            ],
+        })
+            .then((data) => {
+                res.send(data);
+            })
+            .catch((err) => {
+                res.status(500).send({
+                    message: err.message || "Greška prilikom dohvata.",
+                });
+            });
+    }
 };
 
 exports.deleteCourse = (req, res) => {

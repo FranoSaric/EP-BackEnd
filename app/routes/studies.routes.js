@@ -11,7 +11,7 @@ module.exports = function (app) {
         next();
     });
 
-    app.get(
+    app.post(
         "/getStudies",
         [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.getStudies

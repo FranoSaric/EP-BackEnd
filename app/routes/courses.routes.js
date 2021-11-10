@@ -11,8 +11,8 @@ module.exports = function (app) {
         next();
     });
 
-    app.get(
-        "/getCourses/:id?",
+    app.post(
+        "/getCourses",
         [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.getCourses
     );

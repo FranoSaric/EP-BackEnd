@@ -85,21 +85,42 @@ exports.createClassroom = (req, res) => {
 };
 
 exports.getClassrooms = (req, res) => {
-    Classrooms.findAll({
-        include: [
-            {
-                model: Institutions,
-            },
-        ],
-    })
-        .then((data) => {
-            res.send(data);
+    if (req.body.institutionId) {
+        Classrooms.findAll({
+            include: [
+                {
+                    model: Institutions,
+                    where:{
+                        id:req.body.institutionId
+                    }
+                },
+            ],
         })
-        .catch((err) => {
-            res.status(500).send({
-                message: err.message || "Retrieval error.",
+            .then((data) => {
+                res.send(data);
+            })
+            .catch((err) => {
+                res.status(500).send({
+                    message: err.message || "Retrieval error.",
+                });
             });
-        });
+    }else{
+        Classrooms.findAll({
+            include: [
+                {
+                    model: Institutions,
+                },
+            ],
+        })
+            .then((data) => {
+                res.send(data);
+            })
+            .catch((err) => {
+                res.status(500).send({
+                    message: err.message || "Retrieval error.",
+                });
+            });
+    }
 };
 
 exports.deleteClassroom = (req, res) => {
