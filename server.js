@@ -4,10 +4,12 @@ const cors = require("cors");
 
 const app = express();
 
-process.env.TZ = "Europe/Amsterdam";
+process.env.TZ = "Europe/Sarajevo";
+
+console.log("ZONA",process.env.TZ )
 
 var corsOptions = {
-    origin: "http://localhost:3000",
+    origin: "http://localhost:3001",
 };
 
 app.use(cors(corsOptions));

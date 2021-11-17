@@ -7,6 +7,8 @@ const Users = db.users;
 const Op = db.Sequelize.Op;
 
 exports.createRecord = (req, res) => {
+    
+    // console.log(new Date(req.body.checkInTime).toLocaleString("en-US", {timeZone: "Europe/Sarajevo"}))
     if (!req.body.userFK || !req.body.classroomFK || !req.body.checkInTime) {
         res.status(400).send({
             message: "All fields are required!",
