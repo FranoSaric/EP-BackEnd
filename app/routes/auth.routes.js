@@ -36,4 +36,10 @@ module.exports = function (app) {
       [authJwt.verifyToken, authJwt.isEmployee],
         controller.deleteUser
     )
+
+    app.post(
+        "/changePassword",
+        [authJwt.verifyToken,/*authJwt.isEmployee*/],
+        controller.changePassword
+    );
 };
