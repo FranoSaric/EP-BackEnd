@@ -255,6 +255,135 @@ exports.signIn = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
+
+exports.signInWithFaceId = (req, res) => {
+  console.log(req.body);
+  Users.findOne({
+    where: {
+      indexNumber: req.body.indexNumber,
+    },
+  })
+    .then((users) => {
+      if (!users) {
+        return res.status(404).send({ message: "User not found." });
+      }
+      var token = jwt.sign({ id: users.indexNumber }, config.secret, {
+        expiresIn: 86400, // expires in 24 hours
+      });
+
+      let claims = {};
+      let br = 0;
+
+      UserClaim.findAll({
+        where: {
+          userFK: users.dataValues.id,
+        },
+        include: [
+          {
+            model: Users,
+          },
+          {
+            model: PermissionClaims,
+          },
+        ],
+      }).then((userClaim) => {
+        for (let k = 0; k < userClaim.length; k++) {
+          let type = userClaim[k].dataValues.permissionClaim.dataValues.type;
+          let claimsArray = [];
+          for (let l = 0; l < userClaim.length; l++) {
+            if (userClaim[l] !== undefined) {
+              if (
+                type === userClaim[l].dataValues.permissionClaim.dataValues.type
+              ) {
+                let claim =
+                  userClaim[l].dataValues.permissionClaim.dataValues.value;
+                claimsArray.push(claim);
+                br++;
+              }
+            }
+          }
+          claims[type] = claimsArray;
+        }
+      });
+
+      RoleClaim.findAll({
+        where: {
+          roleFK: users.dataValues.roleFK,
+        },
+        include: [
+          {
+            model: Roles,
+          },
+          {
+            model: PermissionClaims,
+          },
+        ],
+      }).then((roleClaim) => {
+        for (let i = 0; i < roleClaim.length; i++) {
+          let type = roleClaim[i].dataValues.permissionClaim.dataValues.type;
+          let valuesOfClaim =
+            claims[roleClaim[i].dataValues.permissionClaim.dataValues.type];
+          let valueOfType =
+            roleClaim[i].dataValues.permissionClaim.dataValues.value.toString();
+
+          if (
+            roleClaim[i].dataValues.permissionClaim.dataValues.type in claims &&
+            !valuesOfClaim.includes(valueOfType)
+          ) {
+            if (roleClaim[i] !== undefined) {
+              if (
+                type === roleClaim[i].dataValues.permissionClaim.dataValues.type
+              ) {
+                let claim =
+                  roleClaim[i].dataValues.permissionClaim.dataValues.value;
+                claims[type].push(claim);
+              }
+            }
+          } else {
+            let claimsArray = [];
+            if (roleClaim[i] !== undefined) {
+              if (
+                type === roleClaim[i].dataValues.permissionClaim.dataValues.type
+              ) {
+                let claim =
+                  roleClaim[i].dataValues.permissionClaim.dataValues.value;
+                claimsArray.push(claim);
+              }
+            }
+            claims[type] = claimsArray;
+          }
+        }
+      });
+
+      users.getRole().then((roles) => {
+        res.status(200).send({
+          id: users.id,
+          indexNumber: users.indexNumber,
+          userName: users.userName,
+          firstName: users.firstName,
+          lastName: users.lastName,
+          email: users.email,
+          roles: roles.name,
+          accessToken: token,
+          institutionFK: users.institutionFK,
+          claims: claims,
+        });
+      });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
+
+
+
+
+
+
+
+
+
 //TODO("ispis svih korisnika za evidenciju")
 exports.findUser = (req, res) => {
   Users.findAll({
@@ -297,6 +426,10 @@ exports.findUser = (req, res) => {
       });
     });
 };
+
+
+
+
 
 exports.getUsers = (req, res) => {
   if (!req.body.institutionId) {

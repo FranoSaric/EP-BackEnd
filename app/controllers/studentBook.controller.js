@@ -3,6 +3,7 @@ const config = require("../config/auth.config");
 const StudentBook = db.studentBook;
 const Books = db.books;
 const Users = db.users;
+const Categories = db.categories
 
 const Op = db.Sequelize.Op;
 
@@ -118,7 +119,6 @@ exports.createStudentBook = (req, res) => {
     }
 };
 
-//Ispis svih kolegija, potrebno preurediti da ispisuje popis svih kolegija za pojedini studiji
 
 exports.getStudentBooks = (req, res) => {
     StudentBook.findAll({
@@ -129,6 +129,36 @@ exports.getStudentBooks = (req, res) => {
             },
             {
                 model: Books,
+            },
+        ],
+    })
+        .then((data) => {
+            res.send(data);
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: err.message || "Retrieval error.",
+            });
+        });
+};
+
+
+exports.getBooksForOneStudent = (req, res) => {
+    StudentBook.findAll({
+        include: [
+            {
+                model: Users,
+                where: {
+                    id: req.body.userFK,
+                },
+            },
+            {
+                model: Books,
+                include: [
+                    {
+                        model: Categories,
+                    },
+                ],
             },
         ],
     })

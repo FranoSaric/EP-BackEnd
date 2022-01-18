@@ -52,6 +52,7 @@ require("./app/routes/booksLibrary.routes")(app);
 require("./app/routes/roleClaim.routes")(app);
 require("./app/routes/userClaim.routes")(app);
 require("./app/routes/permissionClaims.routes")(app);
+require("./app/routes/exam.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8081;

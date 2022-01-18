@@ -16,6 +16,13 @@ module.exports = function (app) {
         [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.getStudentBooks
     );
+
+    app.post(
+        "/getOneStudentBooks",
+        [authJwt.verifyToken, /*authJwt.isEmployee*/],
+        controller.getBooksForOneStudent
+    );
+
     app.post(
         "/createStudentBook",
         [authJwt.verifyToken, /*authJwt.isEmployee*/],

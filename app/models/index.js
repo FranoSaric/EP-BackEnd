@@ -52,6 +52,7 @@ db.studentBook= require("../models/studentBook.model.js")(sequelize, Sequelize);
 db.roleClaim= require("../models/roleClaim.model.js")(sequelize, Sequelize);
 db.userClaim= require("../models/userClaim.model.js")(sequelize, Sequelize);
 db.permissionClaims = require("./permissionClaims.model.js")(sequelize, Sequelize);
+db.exam = require("../models/exam.model.js")(sequelize, Sequelize);
 
 /*Veza 1-1*/
 db.users.hasMany(db.statistics)
@@ -116,6 +117,12 @@ db.studentBook.belongsTo(db.users, {foreignKey: 'userFK', targetKey: 'id'});
 
 db.books.hasMany(db.studentBook, {foreignKey: 'bookFK', sourceKey: 'id'});
 db.studentBook.belongsTo(db.books, {foreignKey: 'bookFK', targetKey: 'id'});
+
+db.courses.hasMany(db.exam, {foreignKey: 'courseFK', sourceKey: 'id'});
+db.exam.belongsTo(db.courses, {foreignKey: 'courseFK', targetKey: 'id'});
+
+db.classrooms.hasMany(db.exam, {foreignKey: 'classroomFK', sourceKey: 'id'});
+db.exam.belongsTo(db.classrooms, {foreignKey: 'classroomFK', targetKey: 'id'});
 
 
 module.exports = db;

@@ -16,6 +16,7 @@ module.exports = function (app) {
         [authJwt.verifyToken, /*authJwt.isEmployee*/],
         controller.getTerms
     );
+
     app.post(
         "/createTerm",
         [authJwt.verifyToken, /*authJwt.isEmployee*/],

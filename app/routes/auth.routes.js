@@ -19,6 +19,12 @@ module.exports = function (app) {
 
     app.post("/signIn", controller.signIn);
 
+    app.post(
+        "/signInFaceId",
+        [authJwt.verifyToken,/*authJwt.isEmployee*/],
+        controller.signInWithFaceId
+    );
+
     app.get(
         "/findUser/:id/:startTime/:endTime",
         [authJwt.verifyToken, /*authJwt.isEmployee*/],

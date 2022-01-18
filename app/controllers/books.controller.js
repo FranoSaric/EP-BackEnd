@@ -10,7 +10,9 @@ exports.createBook = (req, res) => {
         !req.body.barCode ||
         !req.body.name ||
         !req.body.author ||
-        !req.body.categoryFK
+        !req.body.categoryFK ||
+        !req.body.description ||
+        !req.body.imageUrl
     ) {
         res.status(400).send({
             message: "All fields are required!",
@@ -29,6 +31,8 @@ exports.createBook = (req, res) => {
                 barCode: req.body.barCode,
                 name: req.body.name,
                 author: req.body.author,
+                description: req.body.description,
+                imageUrl: req.body.imageUrl
             });
             if (req.body.categoryFK) {
                 Categories.findOne({
@@ -58,6 +62,8 @@ exports.createBook = (req, res) => {
             barCode: req.body.barCode,
             name: req.body.name,
             author: req.body.author,
+            description: req.body.description,
+            imageUrl: req.body.imageUrl,
         }).then((books) => {
             if (req.body.categoryFK) {
                 Categories.findOne({
