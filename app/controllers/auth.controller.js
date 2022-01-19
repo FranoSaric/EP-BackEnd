@@ -24,6 +24,7 @@ exports.signUp = (req, res) => {
     !req.body.email ||
     !req.body.creationDate ||
     !req.body.roleFK ||
+    !req.body.studyYear ||
     !req.body.institutionFK
   ) {
     res.status(400).send({
@@ -51,6 +52,7 @@ exports.signUp = (req, res) => {
           firstName: req.body.firstName,
           lastName: req.body.lastName,
           email: req.body.email,
+          studyYear: req.body.studyYear,
           creationDate: req.body.creationDate,
         })
         .then((users) => {
@@ -80,6 +82,7 @@ exports.signUp = (req, res) => {
       userName: req.body.userName,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
+      studyYear: req.body.studyYear,
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password, 8),
       creationDate: req.body.creationDate,
@@ -148,7 +151,7 @@ exports.signIn = (req, res) => {
           message: "Wrong password!",
         });
       }
-      var token = jwt.sign({ id: users.indexNumber }, config.secret, {
+      var token = jwt.sign({ id: users.indexNumber }  , config.secret, {
         expiresIn: 86400, // expires in 24 hours
       });
 

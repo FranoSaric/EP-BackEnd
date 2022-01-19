@@ -26,6 +26,9 @@ module.exports = (sequelize, Sequelize) => {
         creationDate: {
             type: Sequelize.DATE,
         },
+        studyYear: {
+            type: Sequelize.INTEGER
+        },
     });
 
     return Users;

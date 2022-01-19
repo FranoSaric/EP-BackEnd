@@ -17,6 +17,11 @@ module.exports = function (app) {
         controller.getExams
     );
 
+    app.post(
+        "/getOneExam",
+        [authJwt.verifyToken],
+        controller.getExamsForOneStudent
+    );
 
     // app.post(
     //     "/createCourse",
