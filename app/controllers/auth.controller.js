@@ -388,8 +388,8 @@ exports.signInWithFaceId = (req, res) => {
           lastName: users.lastName,
           email: users.email,
           roles: roles.name,
-          studies: studiesArray,
           accessToken: token,
+          studies: studiesArray,
           institutionFK: users.institutionFK,
           claims: claims,
         });
