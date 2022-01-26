@@ -6,10 +6,10 @@ const app = express();
 
 process.env.TZ = "Europe/Sarajevo";
 
-console.log("ZONA",process.env.TZ )
+console.log("ZONA", process.env.TZ);
 
 var corsOptions = {
-    origin: "http://localhost:3001",
+  origin: "http://localhost:3001",
 };
 
 app.use(cors(corsOptions));
@@ -20,7 +20,6 @@ app.use(bodyParser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
-
 
 // force: true will drop the table if it already exists
 //   db.sequelize.sync({force: true}).then(() => {
@@ -57,6 +56,5 @@ require("./app/routes/exam.routes")(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`);
+  console.log(`Server is running on port ${PORT}.`);
 });
-

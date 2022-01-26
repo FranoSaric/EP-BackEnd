@@ -17,7 +17,6 @@ var bcrypt = require("bcryptjs");
 const { studies } = require("../models");
 
 exports.signUp = (req, res) => {
-  console.log(req.body);
   if (
     !req.body.userName ||
     !req.body.indexNumber ||
@@ -26,7 +25,7 @@ exports.signUp = (req, res) => {
     !req.body.email ||
     !req.body.creationDate ||
     !req.body.roleFK ||
-    !req.body.studyYear ||
+    !req.body.studiesFK ||
     !req.body.institutionFK
   ) {
     res.status(400).send({
@@ -54,7 +53,6 @@ exports.signUp = (req, res) => {
           firstName: req.body.firstName,
           lastName: req.body.lastName,
           email: req.body.email,
-          studyYear: req.body.studyYear,
           creationDate: req.body.creationDate,
         })
         .then((users) => {
@@ -78,13 +76,11 @@ exports.signUp = (req, res) => {
         });
     });
   } else {
-    console.log("date", req.body.creationDate);
     Users.create({
       indexNumber: req.body.indexNumber,
       userName: req.body.userName,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
-      studyYear: req.body.studyYear,
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password, 8),
       creationDate: req.body.creationDate,
@@ -112,10 +108,22 @@ exports.signUp = (req, res) => {
                 users
                   .setRole(id)
                   .then(() => {
-                    res.send({
-                      status: 101,
-                      accessToken: token,
-                    });
+                    if (req.body.studiesFK) {
+                      Studies.findOne({
+                        where: {
+                          id: {
+                            [Op.eq]: req.body.studiesFK,
+                          },
+                        },
+                      }).then((id) => {
+                        users.setStudy(id).then(() => {
+                          res.send({
+                            status: 101,
+                            accessToken: token,
+                          });
+                        });
+                      });
+                    }
                   })
                   .catch((err) => {
                     res.status(500).send({
@@ -153,7 +161,7 @@ exports.signIn = (req, res) => {
           message: "Wrong password!",
         });
       }
-      var token = jwt.sign({ id: users.indexNumber }  , config.secret, {
+      var token = jwt.sign({ id: users.indexNumber }, config.secret, {
         expiresIn: 86400, // expires in 24 hours
       });
 
@@ -191,14 +199,14 @@ exports.signIn = (req, res) => {
           claims[type] = claimsArray;
         }
       });
-      let studiesArray = []
+      let studiesArray = [];
       Studies.findAll({
         where: {
-          id: users.dataValues.studiesFK
-        }
+          id: users.dataValues.studiesFK,
+        },
       }).then((studies) => {
-        studiesArray = studies
-      })
+        studiesArray = studies;
+      });
 
       RoleClaim.findAll({
         where: {
@@ -259,7 +267,7 @@ exports.signIn = (req, res) => {
           email: users.email,
           roles: roles.name,
           studiesFK: users.studiesFK,
-          accessToken: token, 
+          accessToken: token,
           studies: studiesArray,
           institutionFK: users.institutionFK,
           claims: claims,
@@ -321,14 +329,14 @@ exports.signInWithFaceId = (req, res) => {
         }
       });
 
-      let studiesArray = []
+      let studiesArray = [];
       Studies.findAll({
         where: {
-          id: users.dataValues.studiesFK
-        }
+          id: users.dataValues.studiesFK,
+        },
       }).then((studies) => {
-        studiesArray = studies
-      })
+        studiesArray = studies;
+      });
 
       RoleClaim.findAll({
         where: {
@@ -443,10 +451,6 @@ exports.findUser = (req, res) => {
     });
 };
 
-
-
-
-
 exports.getUsers = (req, res) => {
   if (!req.body.institutionId) {
     Users.findAll({
@@ -513,7 +517,7 @@ exports.changePassword = (req, res) => {
       user.password
     );
 
-    console.log(passwordIsValid)
+    console.log(passwordIsValid);
 
     if (!passwordIsValid) {
       res.status(200).send({
