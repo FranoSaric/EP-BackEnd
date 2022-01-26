@@ -3,6 +3,7 @@ const config = require("../config/auth.config");
 const Users = db.users;
 const Records = db.records;
 const Classrooms = db.classrooms;
+const Studies = db.studies;
 const Terms = db.terms;
 const Roles = db.roles;
 const Institutions = db.institutions;
@@ -13,6 +14,7 @@ const Op = db.Sequelize.Op;
 const { Sequelize } = require("sequelize");
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
+const { studies } = require("../models");
 
 exports.signUp = (req, res) => {
   console.log(req.body);
@@ -189,6 +191,14 @@ exports.signIn = (req, res) => {
           claims[type] = claimsArray;
         }
       });
+      let studiesArray = []
+      Studies.findAll({
+        where: {
+          id: users.dataValues.studiesFK
+        }
+      }).then((studies) => {
+        studiesArray = studies
+      })
 
       RoleClaim.findAll({
         where: {
@@ -248,7 +258,9 @@ exports.signIn = (req, res) => {
           lastName: users.lastName,
           email: users.email,
           roles: roles.name,
-          accessToken: token,
+          studiesFK: users.studiesFK,
+          accessToken: token, 
+          studies: studiesArray,
           institutionFK: users.institutionFK,
           claims: claims,
         });
@@ -309,6 +321,15 @@ exports.signInWithFaceId = (req, res) => {
         }
       });
 
+      let studiesArray = []
+      Studies.findAll({
+        where: {
+          id: users.dataValues.studiesFK
+        }
+      }).then((studies) => {
+        studiesArray = studies
+      })
+
       RoleClaim.findAll({
         where: {
           roleFK: users.dataValues.roleFK,
@@ -367,6 +388,7 @@ exports.signInWithFaceId = (req, res) => {
           lastName: users.lastName,
           email: users.email,
           roles: roles.name,
+          studies: studiesArray,
           accessToken: token,
           institutionFK: users.institutionFK,
           claims: claims,
@@ -377,15 +399,6 @@ exports.signInWithFaceId = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
-
-
-
-
-
-
-
-
-
 
 //TODO("ispis svih korisnika za evidenciju")
 exports.findUser = (req, res) => {

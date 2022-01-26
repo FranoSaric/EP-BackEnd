@@ -10,7 +10,6 @@ const Op = db.Sequelize.Op;
 exports.createStudentBook = (req, res) => {
     if (
         !req.body.pickUpDate ||
-        !req.body.returnDate ||
         !req.body.userFK ||
         !req.body.bookFK
     ) {
@@ -30,7 +29,6 @@ exports.createStudentBook = (req, res) => {
             .then((studentBook) => {
                 studentBook.update({
                     pickUpDate: req.body.pickUpDate,
-                    returnDate: req.body.returnDate,
                 });
                 if (req.body.userFK) {
                     Users.findOne({
@@ -80,7 +78,6 @@ exports.createStudentBook = (req, res) => {
     } else {
         StudentBook.create({
             pickUpDate: req.body.pickUpDate,
-            returnDate: req.body.returnDate,
         }).then((studentBook) => {
             if (req.body.userFK) {
                 Users.findOne({

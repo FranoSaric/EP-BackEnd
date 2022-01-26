@@ -1,12 +1,9 @@
 module.exports = (sequelize, Sequelize) => {
     const Books = sequelize.define("books", {
         id: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.BIGINT,
             primaryKey: true,
             autoIncrement: true,
-        },
-        barCode: {
-            type: Sequelize.STRING,
         },
         name: {
             type: Sequelize.STRING,
@@ -15,7 +12,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
         },
         description: {
-            type: Sequelize.STRING,
+            type: Sequelize.STRING(1234),
         },
         imageUrl: {
             type: Sequelize.STRING,

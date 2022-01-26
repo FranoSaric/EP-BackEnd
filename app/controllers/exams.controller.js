@@ -31,7 +31,7 @@ exports.getExams = (req, res) => {
 
 
 exports.getExamsForOneStudent = (req, res) => {
-    if (!req.body.year) {
+    if (!req.body.id) {
         res.status(400).send({
             message: "All fields are required!",
         });
@@ -45,7 +45,7 @@ exports.getExamsForOneStudent = (req, res) => {
                     {
                         model: Study,
                         where: {
-                            year: req.body.year
+                            id: req.body.id
                         }
                     }
                 ]
@@ -56,7 +56,6 @@ exports.getExamsForOneStudent = (req, res) => {
         ],
     }).then((data) => {
         let test = data.filter(data =>  data.dataValues.course )
-            console.log(test)
             res.send(test);
         })
         .catch((err) => {
@@ -65,30 +64,4 @@ exports.getExamsForOneStudent = (req, res) => {
             });
         });
 
-    // Study.findAll({
-    //     where: {
-    //         year: 1
-    //     }
-    // }).then((studies) => {
-    //     Exam.findAll({
-    //         include: [
-    //             {
-    //                 model: Course,
-    //                 where: {
-    //                     studyFK: studies.id
-    //                 }
-    //             },
-    //             {
-    //                 model: Classroom
-    //             }
-    //         ],
-    //     })
-    // }).then((data) => {
-    //         res.send(data);
-    //     })
-    //     .catch((err) => {
-    //         res.status(500).send({
-    //             message: err.message || "Retrieval error.",
-    //         });
-    //     });
 };

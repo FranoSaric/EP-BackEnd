@@ -64,6 +64,9 @@ db.library.belongsTo(db.institutions)
 db.roles.hasMany(db.users, {foreignKey: 'roleFK', sourceKey: 'id'});
 db.users.belongsTo(db.roles, {foreignKey: 'roleFK', targetKey: 'id'});
 
+db.studies.hasMany(db.users, {foreignKey: 'studiesFK', sourceKey: 'id'});
+db.users.belongsTo(db.studies, {foreignKey: 'studiesFK', targetKey: 'id'});
+
 db.roles.hasMany(db.roleClaim, {foreignKey: 'roleFK', sourceKey: 'id'});
 db.roleClaim.belongsTo(db.roles, {foreignKey: 'roleFK', targetKey: 'id'});
 

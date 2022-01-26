@@ -29,6 +29,9 @@ module.exports = (sequelize, Sequelize) => {
         studyYear: {
             type: Sequelize.INTEGER
         },
+        profilePhoto: {
+            type: Sequelize.STRING
+        },
     });
 
     return Users;
