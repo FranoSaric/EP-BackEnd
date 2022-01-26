@@ -461,6 +461,9 @@ exports.getUsers = (req, res) => {
         {
           model: Roles,
         },
+        {
+          model: Studies,
+        },
       ],
     })
       .then((data) => {
