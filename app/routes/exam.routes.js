@@ -3,35 +3,30 @@ const { authJwt } = require("../middleware");
 const controller = require("../controllers/exams.controller");
 
 module.exports = function (app) {
-    app.use(function (req, res, next) {
-        res.header(
-            "Access-Control-Allow-Headers",
-            "x-access-token, Origin, Content-Type, Accept"
-        );
-        next();
-    });
-
-    app.post(
-        "/getExams",
-        [authJwt.verifyToken],
-        controller.getExams
+  app.use(function (req, res, next) {
+    res.header(
+      "Access-Control-Allow-Headers",
+      "x-access-token, Origin, Content-Type, Accept"
     );
+    next();
+  });
 
-    app.post(
-        "/getOneExam",
-        [authJwt.verifyToken],
-        controller.getExamsForOneStudent
-    );
+  app.post("/getExams", [authJwt.verifyToken], controller.getExams);
 
-    // app.post(
-    //     "/createCourse",
-    //     [authJwt.verifyToken, /*authJwt.isEmployee*/],
-    //     controller.createCourse
-    // );
+  app.post(
+    "/getOneExam",
+    [authJwt.verifyToken],
+    controller.getExamsForOneStudent
+  );
+  app.post(
+    "/createExam",
+    [authJwt.verifyToken /*authJwt.isEmployee*/],
+    controller.createExam
+  );
 
-    // app.delete(
-    //   "/deleteCourse",
-    //   [authJwt.verifyToken, /*authJwt.isEmployee*/],
-    //     controller.deleteCourse
-    // )
+  app.delete(
+    "/deleteExam",
+    [authJwt.verifyToken /*authJwt.isEmployee*/],
+    controller.deleteExam
+  );
 };

@@ -17,6 +17,7 @@ var bcrypt = require("bcryptjs");
 const { studies } = require("../models");
 
 exports.signUp = (req, res) => {
+  console.log(req.body);
   if (
     !req.body.userName ||
     !req.body.indexNumber ||
