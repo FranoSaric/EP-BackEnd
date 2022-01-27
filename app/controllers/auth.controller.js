@@ -35,6 +35,7 @@ exports.signUp = (req, res) => {
     return;
   }
   if (req.body.id) {
+    console.log("UPADAAA", req.body);
     Users.findOne({
       where: {
         indexNumber: {
@@ -66,6 +67,28 @@ exports.signUp = (req, res) => {
               },
             }).then((id) => {
               users.setRole(id);
+            });
+          }
+          if (req.body.studiesFK) {
+            Studies.findOne({
+              where: {
+                id: {
+                  [Op.eq]: req.body.studiesFK,
+                },
+              },
+            }).then((id) => {
+              users.setStudy(id);
+            });
+          }
+          if (req.body.institutionFK) {
+            Institutions.findOne({
+              where: {
+                id: {
+                  [Op.eq]: req.body.institutionFK,
+                },
+              },
+            }).then((id) => {
+              users.setInstitution(id);
             });
           }
         })
